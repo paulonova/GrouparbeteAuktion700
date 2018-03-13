@@ -133,7 +133,11 @@ function countdown(slutDatum){
 
     inputBud = document.getElementById("inputBud");
     buttonSubmitBud = document.getElementById("buttonBudSumbit");
-    buttonSubmitBud.addEventListener("click", function() { CheckBid() });
+
+    if (buttonSubmitBud !== null)
+    {
+        buttonSubmitBud.addEventListener("click", function() { CheckBid() });        
+    }
 
 }
 
