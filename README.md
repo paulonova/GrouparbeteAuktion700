@@ -30,8 +30,8 @@ Men ni kan bygga det som en admin del i er lösning.
 att få det användarvänligt, enkelt och snyggt.
 - Github skall användas för att lagra och versionshantera all kod
 Betyg
-Det går bara att få G och IG på uppgiften. Den är obligatorisk för att kunna få G eller VG på
-hela kursen.
+Det går bara att få G och IG på uppgiften.
+
 Redovisning
 Redovisning sker genom att du visar läraren den fungerande uppgiften. Skicka INTE in något
 via mail! Senaste tidpunkt för redovisning är sista veckan på kursen. 

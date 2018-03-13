@@ -19,6 +19,10 @@ body{
 /* CONTENT ***/
 /******************************************************/
 
-.app-container{
-    
+.auktion-kard{
+    margin: 0 auto;
+    width: 80%;
+    border: 1px solid darkolivegreen;
+    border-radius: 10px;
+    padding: 20px;
 }
