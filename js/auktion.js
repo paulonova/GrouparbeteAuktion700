@@ -86,3 +86,15 @@ var x = setInterval(function() {
 function myFunction() {
     alert(slutDatum);
 }
+
+
+//bar
+
+closeSidebar();
+
+function openSidebar() {
+    document.getElementById("mySidebar").style.display = "block";
+}
+function closeSidebar() {
+    document.getElementById("mySidebar").style.display = "none";
+}
