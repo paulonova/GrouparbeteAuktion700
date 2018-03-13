@@ -88,7 +88,8 @@ function myFunction() {
 }
 
 
-//bar
+//Function to open and close menubar..
+/* ************************************/
 
 closeSidebar();
 
