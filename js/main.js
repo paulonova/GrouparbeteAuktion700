@@ -52,8 +52,8 @@ function sendRequest(url){
             "GruppKod: " + data[i].Gruppkod,
             "Utropspris: " + data[i].Utropspris + " kr");
 
-            // countdown(data[i].SlutDatum);
             createAuktionElements(auktion);
+            // countdown(data[i].SlutDatum);
         }
     });
   }
@@ -64,8 +64,10 @@ function sendRequest(url){
 }
 
 //Function CountDown..
-function countdown(slutDatum, element){
+function countdown(slutDatum){
+    
     var countDownDate = new Date(slutDatum).getTime();
+    console.log("countDownDate " + countDownDate);
 
     var x = setInterval(function() {
 
@@ -77,19 +79,14 @@ function countdown(slutDatum, element){
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    let pCountDown = document.createElement("P");
-    pCountDown.setAttribute("id", "countdown");
-    let countText = document.createTextNode("Slut Auktion: " + days + "d " + hours + "h "
-    + minutes + "m " + seconds + "s ");
-    pCountDown.appendChild(countText);
-    element.appendChild(pCountDown);
-    // document.getElementById("countdown").innerHTML = "<b>Slut Auktion: </b>" + days + "d " + hours + "h "
-    // + minutes + "m " + seconds + "s ";
+    document.getElementById("countdown").innerHTML = "Countdown: " + days + "d " + hours + "h "
+    + minutes + "m " + seconds + "s ";
 
     if (distance < 0) {
         clearInterval(x);
         document.getElementById("countdown").innerHTML = "EXPIRED";
     }
+
   }, 1000);
 }
 
@@ -107,7 +104,7 @@ function countdown(slutDatum, element){
 
     let pTitle = document.createElement("H3");
     pTitle.setAttribute("id", "title");
-    let titleText = document.createTextNode(auktion.title);
+    let titleText = document.createTextNode(auktion.titel);
     pTitle.appendChild(titleText);
     div.appendChild(pTitle);
 
@@ -147,12 +144,11 @@ function countdown(slutDatum, element){
     pUtropspris.appendChild(utropsText);
     div.appendChild(pUtropspris);
 
-    // countdown(auktion.slutDatum, div);
-    // let pCountDown = document.createElement("P");
-    // pCountDown.setAttribute("id", "countdown");
-    // let countText = document.createTextNode(countdown(auktion.slutDatum)); //??????
-    // pCountDown.appendChild(utropsText);
-    // div.appendChild(pCountDown);
+    let pCountDown = document.createElement("P");
+    pCountDown.setAttribute("id", "countdown");
+    let countText = document.createTextNode("Countdown: ");
+    pCountDown.appendChild(countText);
+    div.appendChild(pCountDown);
 
     //Input text
     let txtArea = document.createElement("INPUT");
@@ -164,6 +160,7 @@ function countdown(slutDatum, element){
     let button = document.createElement("INPUT");
     button.setAttribute("type", "button");
     button.setAttribute("value", "Ge ett Bud"); 
+    button.setAttribute("class", "myBotton w3-button w3-round w3-teal"); 
     div.appendChild(button);
 
     
