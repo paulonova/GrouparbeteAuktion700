@@ -13,4 +13,3 @@ function closeSidebar() {
 }
 
 
-//ddf
