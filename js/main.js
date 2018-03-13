@@ -54,6 +54,13 @@ function sendRequest(url){
             "Utropspris: " + data[i].Utropspris + " kr");
 
             countdown(data[i].SlutDatum);
+<<<<<<< HEAD
+            updateAuktionCard(auktion);          
+        }        
+    });
+  }
+)
+=======
             updateAuktionCard(auktion);
 
         }
@@ -61,6 +68,7 @@ function sendRequest(url){
             });
         }
     )
+>>>>>>> 00cda7fabc0fa9d7fce652efd5a1dcc3b36b680d
   .catch(function(err) {
     console.log('Fetch Error :-S', err);
   });
@@ -89,6 +97,37 @@ function countdown(slutDatum){
     }
   }, 1000);
 }
+
+  function createAuktionElements(auktion, bud){
+    let div = document.createElement("DIV");
+    div.setAttribute("class", "auktion-card");
+    div.setAttribute("id", "auktion-card");
+
+    let pTitle = document.createElement("H3");
+    pTitle.setAttribute("id", "title");
+    // pTitle.document.
+    let pAuktionId = document.createElement("P");
+    let pBeskrivning = document.createElement("P");
+    let pStartDatum = document.createElement("P");
+    let pSlutDatum = document.createElement("P");
+    let pGruppKod = document.createElement("P");
+    let pUtropspris = document.createElement("P");
+    let pCountDown = document.createElement("P");
+    let pBud = document.createElement("P");
+
+    //Input text
+    let txtArea = document.createElement("INPUT");
+    txtArea.setAttribute("type", "text");
+    txtArea.setAttribute("class", "inputBud");
+    txtArea.appendChild()
+
+    //input button
+    let button = document.createElement("INPUT");
+    button.setAttribute("type", "button");
+    button.setAttribute("value", "Ge ett Bud"); 
+
+    
+  }
 
   window.onload = function(){
     //Auktion
