@@ -45,20 +45,22 @@ function sendRequest(url){
 
         for (let i = 0; i < data.length; i++) {
           var auktion = new Auktion(
-            "AuktionID: " + data[i].AuktionID, 
-            "Title: " + data[i].Titel, 
-            "Beskrivning: " + data[i].Beskrivning, 
-            "StartDatum: " + data[i].StartDatum, 
-            "SlutDatum: " + data[i].SlutDatum, 
-            "GruppKod: " + data[i].Gruppkod, 
+            "AuktionID: " + data[i].AuktionID,
+            "Title: " + data[i].Titel,
+            "Beskrivning: " + data[i].Beskrivning,
+            "StartDatum: " + data[i].StartDatum,
+            "SlutDatum: " + data[i].SlutDatum,
+            "GruppKod: " + data[i].Gruppkod,
             "Utropspris: " + data[i].Utropspris + " kr");
 
             countdown(data[i].SlutDatum);
-            updateAuktionCard(auktion);          
-        }        
-    });
-  }
-)
+            updateAuktionCard(auktion);
+
+        }
+
+            });
+        }
+    )
   .catch(function(err) {
     console.log('Fetch Error :-S', err);
   });
@@ -138,6 +140,9 @@ function countdown(slutDatum){
     startDatum.innerHTML = auktion.startDatum;
     slutDatum.innerHTML = auktion.slutDatum;
     utropspris.innerHTML = auktion.utropspris;
-    
+
   }
 
+  function myFunction() {
+      alert(slutDatum);
+  }
