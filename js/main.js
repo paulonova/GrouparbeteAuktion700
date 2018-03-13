@@ -13,6 +13,8 @@ var     countdown;
 var budID;
 var summa;
 
+var inputBud;
+var buttonSubmitBud;
 
 
 class Auktion{
@@ -100,7 +102,11 @@ function countdown(slutDatum){
     gruppkod = document.getElementById("gruppkod");
     utropspris = document.getElementById("utropspris");
 
-  }
+    inputBud = document.getElementById("inputBud");
+    buttonSubmitBud = document.getElementById("buttonBudSumbit");
+    buttonSubmitBud.addEventListener("click", function() { CheckBid() });
+
+}
 
   function updateAuktionCard(auktion){
     auktionID.innerHTML = auktion.auktionID;
@@ -110,5 +116,35 @@ function countdown(slutDatum){
     slutDatum.innerHTML = auktion.slutDatum;
     utropspris.innerHTML = auktion.utropspris;
     
-  }
+}
 
+function CheckBid()
+{
+    let bidURL = "http://nackowskis.azurewebsites.net/api/Bud/700/";
+    let bidToMatch = 0;
+    let auktionID = 7;
+
+    if (inputBud.value.length > 0)
+    {
+        let bidAmount = parseInt(inputBud.value);
+        if (Number.isInteger(bidAmount) == true)
+        {       
+            if (bidAmount > bidToMatch)
+            {
+                let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };  
+                fetch(bidURL + auktionID,
+                {
+                    method: 'POST',
+                    body: JSON.stringify(jsonData),
+                    headers: 
+                    {
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-Type': 'application/json'
+                    }
+                }).then(function (data) {
+                    console.log('Request success: ', 'posten skapad');
+                })  
+            }
+        }
+    }
+}
