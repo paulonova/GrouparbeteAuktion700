@@ -1,4 +1,3 @@
-
 const   AuktionUrl = "http://nackowskis.azurewebsites.net/api/Auktion/700";
 var     auktionID;
 var     titel;
@@ -111,4 +110,3 @@ function countdown(slutDatum){
     utropspris.innerHTML = auktion.utropspris;
     
   }
-
