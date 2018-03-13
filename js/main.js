@@ -20,6 +20,8 @@ var skapaTitel;
 var skapaBeskrivning;
 var skapaUtropspris;
 var skapaStartDatum;
+var skapaStartTid;
+var skapaSlutDatum;
 var skapaSlutDatum;
 var skapaError;
 
@@ -153,9 +155,31 @@ function countdown(slutDatum){
     skapaBeskrivning = document.getElementById("auction-description");
     skapaUtropspris = document.getElementById("auction-startingprice");
     skapaStartDatum = document.getElementById("auction-datestart");
+    skapaStartTid = document.getElementById("auction-timestart");
     skapaSlutDatum = document.getElementById("auction-dateend");
+    skapaSlutTid = document.getElementById("auction-timeend");
     skapaError = document.getElementById("error");
 
+    if (skapaStartDatum !== null && skapaSlutDatum !== null)
+    {
+        skapaStartDatum.valueAsDate = new Date();
+        skapaSlutDatum.valueAsDate = new Date();
+    }
+    if (skapaStartTid !== null && skapaSlutTid !== null)
+    {
+        let date = new Date();
+
+        let hour = date.getHours();
+        let min = date.getMinutes();
+
+        hour = (hour < 10 ? "0" : "") + hour;
+        min = (min < 10 ? "0" : "") + min;
+
+        displayTime = hour + ":" + min; 
+
+        skapaStartTid.value = displayTime;
+        skapaSlutTid.value = displayTime;
+    }
 }
 
   function updateAuktionCard(auktion){
