@@ -10,11 +10,13 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-teal.css">
     <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
-    <script src="main.js" defer></script>
+    <script src="js/main.js" defer></script>
+
+
     <style>
     #main{
 
-
+      background-color: lightblue;
       text-align: center;
 
     }
@@ -22,7 +24,10 @@
     #image1 {
       margin-bottom: 20px;
     }
+
+
     </style>
+
 </head>
 
 <body>
@@ -44,8 +49,25 @@
         <h1 class="w3-bar-item">Auktion App Grupp/700</h1>
     </header>
 
+    <main id="container" class="app-container">
 
-  
+        <div id="auktion-card" class="auktion-card">
+            <h3 id="title">Titel:</h3>
+            <p id="auktionID">AuktionID:</p>
+            <p id="beskrivning">Beskrivning:</p>
+            <p id="startDatum">StartDatum:</p>
+            <p id="slutDatum">slutDatum:</p>
+            <p id="gruppkod">Gruppkod: 700</p>
+            <p id="utropspris">Utropspris:</p>
+            <p id="countdown">Slut Auktion: </p>
+            <p>
+                <input type="text" class="inputBud">
+                <input type="button" id="buttonBudSumbit" value="Ge ett Bud" class="w3-button w3-round-large w3-teal"></button>
+            </p>
+        </div>
+
+
+    </main>
 
     <div id="main"><br>
       <div id="uno">Auktion ID:
@@ -68,15 +90,11 @@
   </div>
 
 
-
-
-
     <footer class="w3-container w3-theme w3-margin-top">
         <h3>Footer</h3>
     </footer>
 
-    <script src="slideBar.js"></script>
-    <script src="auktion.js"></script>
+    <script src="js/slidebar.js"></script>
 </body>
 
 </html>

@@ -1,4 +1,3 @@
-
 const   AuktionUrl = "http://nackowskis.azurewebsites.net/api/Auktion/700";
 var     auktionID;
 var     titel;
@@ -54,13 +53,6 @@ function sendRequest(url){
             "Utropspris: " + data[i].Utropspris + " kr");
 
             countdown(data[i].SlutDatum);
-<<<<<<< HEAD
-            updateAuktionCard(auktion);          
-        }        
-    });
-  }
-)
-=======
             updateAuktionCard(auktion);
 
         }
@@ -68,7 +60,6 @@ function sendRequest(url){
             });
         }
     )
->>>>>>> 00cda7fabc0fa9d7fce652efd5a1dcc3b36b680d
   .catch(function(err) {
     console.log('Fetch Error :-S', err);
   });
