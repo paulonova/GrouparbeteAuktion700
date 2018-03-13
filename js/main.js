@@ -42,17 +42,22 @@ function sendRequest(url){
       response.json()
       .then(function(data) {
         console.log('Status Code: ' + response.status);
-        var auktion = new Auktion(
-                    "AuktionID: " + data[0].AuktionID, 
-                    "Title: " + data[0].Titel, 
-                    "Beskrivning: " + data[0].Beskrivning, 
-                    "StartDatum: " + data[0].StartDatum, 
-                    "SlutDatum: " + data[0].SlutDatum, 
-                    "GruppKod: " + data[0].Gruppkod, 
-                    "Utropspris: " + data[0].Utropspris + " kr");
 
-                    countdown(data[0].SlutDatum);
-                    updateAuktionCard(auktion);
+        for (let i = 0; i < data.length; i++) {
+          var auktion = new Auktion(
+            "AuktionID: " + data[i].AuktionID, 
+            "Title: " + data[i].Titel, 
+            "Beskrivning: " + data[i].Beskrivning, 
+            "StartDatum: " + data[i].StartDatum, 
+            "SlutDatum: " + data[i].SlutDatum, 
+            "GruppKod: " + data[i].Gruppkod, 
+            "Utropspris: " + data[i].Utropspris + " kr");
+
+            countdown(data[i].SlutDatum);
+            updateAuktionCard(auktion);
+          
+        }
+        
             });
         }
     )
