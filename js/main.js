@@ -1,3 +1,4 @@
+
 const   AuktionUrl = "http://nackowskis.azurewebsites.net/api/Auktion/700";
 var     auktionID;
 var     titel;
@@ -12,6 +13,8 @@ var     countdown;
 var budID;
 var summa;
 
+var inputBud;
+var buttonSubmitBud;
 
 
 class Auktion{
@@ -44,22 +47,20 @@ function sendRequest(url){
 
         for (let i = 0; i < data.length; i++) {
           var auktion = new Auktion(
-            "AuktionID: " + data[i].AuktionID,
-            "Title: " + data[i].Titel,
-            "Beskrivning: " + data[i].Beskrivning,
-            "StartDatum: " + data[i].StartDatum,
-            "SlutDatum: " + data[i].SlutDatum,
-            "GruppKod: " + data[i].Gruppkod,
+            "AuktionID: " + data[i].AuktionID, 
+            "Title: " + data[i].Titel, 
+            "Beskrivning: " + data[i].Beskrivning, 
+            "StartDatum: " + data[i].StartDatum, 
+            "SlutDatum: " + data[i].SlutDatum, 
+            "GruppKod: " + data[i].Gruppkod, 
             "Utropspris: " + data[i].Utropspris + " kr");
 
             countdown(data[i].SlutDatum);
-            updateAuktionCard(auktion);
-
-        }
-
-            });
-        }
-    )
+            updateAuktionCard(auktion);          
+        }        
+    });
+  }
+)
   .catch(function(err) {
     console.log('Fetch Error :-S', err);
   });
@@ -130,7 +131,11 @@ function countdown(slutDatum){
     gruppkod = document.getElementById("gruppkod");
     utropspris = document.getElementById("utropspris");
 
-  }
+    inputBud = document.getElementById("inputBud");
+    buttonSubmitBud = document.getElementById("buttonBudSumbit");
+    buttonSubmitBud.addEventListener("click", function() { CheckBid() });
+
+}
 
   function updateAuktionCard(auktion){
     auktionID.innerHTML = auktion.auktionID;
@@ -139,9 +144,36 @@ function countdown(slutDatum){
     startDatum.innerHTML = auktion.startDatum;
     slutDatum.innerHTML = auktion.slutDatum;
     utropspris.innerHTML = auktion.utropspris;
+    
+}
 
-  }
+function CheckBid()
+{
+    let bidURL = "http://nackowskis.azurewebsites.net/api/Bud/700/";
+    let bidToMatch = 0;
+    let auktionID = 7;
 
-  function myFunction() {
-      alert(slutDatum);
-  }
+    if (inputBud.value.length > 0)
+    {
+        let bidAmount = parseInt(inputBud.value);
+        if (Number.isInteger(bidAmount) == true)
+        {       
+            if (bidAmount > bidToMatch)
+            {
+                let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };  
+                fetch(bidURL + auktionID,
+                {
+                    method: 'POST',
+                    body: JSON.stringify(jsonData),
+                    headers: 
+                    {
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-Type': 'application/json'
+                    }
+                }).then(function (data) {
+                    console.log('Request success: ', 'posten skapad');
+                })  
+            }
+        }
+    }
+}
