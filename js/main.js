@@ -16,6 +16,13 @@ var summa;
 var inputBud;
 var buttonSubmitBud;
 
+var skapaTitel;
+var skapaBeskrivning;
+var skapaUtropspris;
+var skapaStartDatum;
+var skapaSlutDatum;
+var skapaError;
+
 
 class Auktion{
     constructor(auktionID, titel, beskrivning, startDatum, slutDatum, gruppkod, utropspris){
@@ -133,7 +140,21 @@ function countdown(slutDatum){
 
     inputBud = document.getElementById("inputBud");
     buttonSubmitBud = document.getElementById("buttonBudSumbit");
-    buttonSubmitBud.addEventListener("click", function() { CheckBid() });
+
+    if (buttonSubmitBud !== null)
+    {
+        buttonSubmitBud.addEventListener("click", function() { CheckBid() });        
+    }
+
+
+    //Admin page
+
+    skapaTitel = document.getElementById("auction-title");
+    skapaBeskrivning = document.getElementById("auction-description");
+    skapaUtropspris = document.getElementById("auction-startingprice");
+    skapaStartDatum = document.getElementById("auction-datestart");
+    skapaSlutDatum = document.getElementById("auction-dateend");
+    skapaError = document.getElementById("error");
 
 }
 
@@ -151,7 +172,7 @@ function CheckBid()
 {
     let bidURL = "http://nackowskis.azurewebsites.net/api/Bud/700/";
     let bidToMatch = 0;
-    let auktionID = 7;
+    let auktionID = 7; //This needs to be updated to valid ID dependentant on auction
 
     if (inputBud.value.length > 0)
     {
@@ -176,4 +197,48 @@ function CheckBid()
             }
         }
     }
+}
+
+function CreateAuction()
+{
+    let titleMinLegth = 3;
+    let descriptionLengthMin = 10;
+
+    let auctionURL = "http://nackowskis.azurewebsites.net/api/Auktion/700/";
+
+    let auctionTitle = skapaTitel.value;
+    let auctionDescription = "";
+    let auctionStartDate = "2018-03-10T00:00:00";
+    let auctionEndDate = "2018-03-17T00:00:00";1
+    let auctionGroupCode = 700;
+    let auctionStartingPrice = skapaUtropspris;
+
+    let auctionTitleLength = auctionTitle.value.length > titleMinLegth;
+    let auctionDescruptionLength = auctionDescription.value.length > descriptionLengthMin;
+    let startingPriceAboveZero = auctionStartingPrice > 0;
+
+    if (!auctionTitleLength || !auctionDescruptionLength || !startingPriceAboveZero)
+    {
+        skapaError = "<strong class='red'>ERROR: </strong><span class='red'>"
+
+        if (!auctionTitleLength) { skapaError += "Title should be minimum " + titleMinLegth + " characters <br>"; }
+        if (!auctionDescruptionLength) { skapaError += "Description should be minimum " + descriptionLengthMin + " characters <br>"; }
+        if (!startingPriceAboveZero) { skapaError += "Starting price must be above 0. <br>"; }
+
+        return;
+    }
+
+    let jsonData = { AuktionID: 0, Titel: auctionTitle, Beskrivning: auctionDescription, StartDatum: 0, SlutDatum: 0, GruppKod: auctionGroupCode, Utropspris: auctionStartingPrice };  
+    fetch(auctionURL,
+        {
+            method: 'POST',
+            body: JSON.stringify(jsonData),
+            headers: 
+            {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+            }
+        }).then(function (data) {
+            console.log('Request success: ', 'posten skapad');
+    })  
 }
