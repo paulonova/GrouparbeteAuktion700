@@ -11,3 +11,4 @@ function openSidebar() {
 function closeSidebar() {
     document.getElementById("mySidebar").style.display = "none";
 }
+//dfd
