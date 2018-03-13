@@ -47,17 +47,17 @@ function sendRequest(url){
 
         for (let i = 0; i < data.length; i++) {
           var auktion = new Auktion(
-            "AuktionID: " + data[i].AuktionID, 
-            "Title: " + data[i].Titel, 
-            "Beskrivning: " + data[i].Beskrivning, 
-            "StartDatum: " + data[i].StartDatum, 
-            "SlutDatum: " + data[i].SlutDatum, 
-            "GruppKod: " + data[i].Gruppkod, 
+            "AuktionID: " + data[i].AuktionID,
+            "Title: " + data[i].Titel,
+            "Beskrivning: " + data[i].Beskrivning,
+            "StartDatum: " + data[i].StartDatum,
+            "SlutDatum: " + data[i].SlutDatum,
+            "GruppKod: " + data[i].Gruppkod,
             "Utropspris: " + data[i].Utropspris + " kr");
 
             countdown(data[i].SlutDatum);
-            updateAuktionCard(auktion);          
-        }        
+            updateAuktionCard(auktion);
+        }
     });
   }
 )
@@ -116,9 +116,9 @@ function countdown(slutDatum){
     //input button
     let button = document.createElement("INPUT");
     button.setAttribute("type", "button");
-    button.setAttribute("value", "Ge ett Bud"); 
+    button.setAttribute("value", "Ge ett Bud");
 
-    
+
   }
 
   window.onload = function(){
@@ -144,7 +144,7 @@ function countdown(slutDatum){
     startDatum.innerHTML = auktion.startDatum;
     slutDatum.innerHTML = auktion.slutDatum;
     utropspris.innerHTML = auktion.utropspris;
-    
+
 }
 
 function CheckBid()
@@ -157,22 +157,22 @@ function CheckBid()
     {
         let bidAmount = parseInt(inputBud.value);
         if (Number.isInteger(bidAmount) == true)
-        {       
+        {
             if (bidAmount > bidToMatch)
             {
-                let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };  
+                let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };
                 fetch(bidURL + auktionID,
                 {
                     method: 'POST',
                     body: JSON.stringify(jsonData),
-                    headers: 
+                    headers:
                     {
                             'Accept': 'application/json, text/plain, */*',
                             'Content-Type': 'application/json'
                     }
                 }).then(function (data) {
                     console.log('Request success: ', 'posten skapad');
-                })  
+                })
             }
         }
     }
