@@ -32,27 +32,48 @@
         <h1 class="w3-bar-item">Auktion App Grupp/700</h1>
     </header>
 
-    <div id="error">
+    <section id="newItem">
+            <div class="w3-container w3-dark-gray"><h2 id="head-text">Create new item</h2></div>
 
-    </div>
-    <strong>Title:</strong><br>
-    <input type="text" id="auction-title" pattern=".{3,}" required title="Title minimum 3 characters"><br>
-    <strong>Description:</strong><br>
-    <textarea id="auction-description" pattern=".{10,255}" required title="Description should be 10 to 255 characters">
-    </textarea><br>
-    <strong>Starting Price:</strong><br>
-    <input type="number" min="1" id="auction-startingprice"><br>
+        <form id="head-form" class=" form-container w3-container">            
+            <label>Autkion ID</label>
+            <input type="text" id="auktion-id" class="input-field w3-input" placeholder="Auktion ID"></input>
 
-    <strong>Start Date</strong><br>
-    <input type="date" id="auction-datestart" disabled> <input type="time" id="auction-timestart" disabled><br>
+            <label>Titel</label>
+            <input type="text" id="title" class="input-field w3-input" placeholder="Title"></input>
 
-    <strong>End Date</strong><br>
-    <input type="date" id="auction-dateend"> <input type="time" id="auction-timeend"><br> 
+            <label>Beskrivning</label>
+            <input type="text" id="beskrivning" class="input-field w3-input" placeholder="Beskrivinig"></input>
+
+            <label>StartDatum</label>
+            <input type="text" id="startdatum" class="input-field w3-input" placeholder="Select a startDatum"></input>
+
+            <label>SlutDatum</label>
+            <input type="text" id="slutdatum" class="input-field w3-input" placeholder="Select a slutDatum"></input>
+
+            <label>Gruppkod</label>
+            <input type="text" id="gruppkod" class="input-field w3-input" placeholder="Gruppkod"></input>
+
+            <label>Utropspris</label>
+            <input type="text" id="utropspris" class="input-field w3-input" placeholder="Utropspris"></input>
+
+            <input class="myBotton w3-button w3-round w3-teal" onclick="createNewAuktion()"
+                type="button" id="create-aukt-btn" value="Create Auktion"></input>
+        </form>
+    </section>
     <br>
-    <button id="aution-create" class="w3-button w3-round-large w3-teal">Create Auction</button>
+    <div class="w3-container w3-dark-gray"><h2 id="del-auktion">Delete Auktion</h2></div>
+    <section class="delete-continer w3-container" id="wrapper-delete">            
+            <label>Delete Auktion by ID</label>
+            <input type="text" id="auktion-del-id" class="input-field w3-input" placeholder="Write your auktion id.."></input>
+            <input class="myBotton w3-button w3-round w3-teal" type="button" id="del-btn" value="Delete"></input>
+    </section>
+          
+
+
 
     <footer class="w3-container w3-theme w3-margin-top">
-        <a href="index.html"><h3>&#x3c; Back to Index</h3></a>
+        <a href="index.html"><h3 class="footer">&#x3c; Back to Index</h3></a>
     </footer>
           
     <script src="js/slidebar.js"></script>

@@ -7,23 +7,13 @@ var     startDatum;
 var     slutDatum;
 var     gruppkod = 700;
 var     utropspris;
-
 var     countdown;
-
-var budID;
-var summa;
+var     budID;
+var     summa;
 
 var inputBud;
 var buttonSubmitBud;
 
-// var skapaTitel;
-// var skapaBeskrivning;
-// var skapaUtropspris;
-// var skapaStartDatum;
-// var skapaStartTid;
-// var skapaSlutDatum;
-// var skapaSlutDatum;
-// var skapaError;
 
 
 class AuktionManager {
@@ -50,6 +40,7 @@ class Auktion{
             this.slutDatum = slutDatum;
             this.gruppkod = gruppkod;
             this.utropspris = utropspris;
+
             this.bids = new Array();
             this.input = null;
             this.message = null;
@@ -57,6 +48,7 @@ class Auktion{
 
     LoadBids()
     {
+
         fetch(BidsUrl + this.auktionID).then(
             function(response) 
             {
@@ -206,7 +198,10 @@ function sendRequest(url){
 
 //Function CountDown..
 function countdown(slutDatum, element){
+    console.log(slutDatum);
+    console.log(element);
     var countDownDate = new Date(slutDatum).getTime();
+    console.log("countDownDate " + countDownDate);
 
     var x = setInterval(function() {
 
@@ -320,6 +315,8 @@ function countdown(slutDatum, element){
     
   }
 
+
+
 function CheckBid()
 {
     let bidURL = "http://nackowskis.azurewebsites.net/api/Bud/700/";
@@ -350,30 +347,34 @@ function CheckBid()
         }
     }
 }
-//   window.onload = function(){  
 
-//     //Auktion
-//     auktionID = document.getElementById("auktionID");
-//     titel = document.getElementById("title");
-//     beskrivning = document.getElementById("beskrivning");
-//     startDatum = document.getElementById("startDatum");
-//     slutDatum = document.getElementById("slutDatum");
-//     gruppkod = document.getElementById("gruppkod");
-//     utropspris = document.getElementById("utropspris");
 
-//   }
+/**************************************************/
+/** PAULO ==>  CREATE AUKTION METHODS */
+/**************************************************/
 
-//   function updateAuktionCard(auktion){
-//     auktionID.innerHTML = auktion.auktionID;
-//     titel.innerHTML = auktion.titel;
-//     beskrivning.innerHTML = auktion.beskrivning;
-//     startDatum.innerHTML = auktion.startDatum;
-//     slutDatum.innerHTML = auktion.slutDatum;
-//     utropspris.innerHTML = auktion.utropspris;
-//     gruppkod.innerHTML = auktion.gruppkod;
+function createNewAuktion(){
 
-//   }
+    var newAuktion = new Auktion(
+        auktionID = document.getElementById("auktion-id").value,
+        titel = document.getElementById("title").value,
+        beskrivning = document.getElementById("beskrivning").value,
+        startDatum = document.getElementById("startDatum").value,
+        slutDatum = document.getElementById("slutDatum").value,
+        gruppkod = document.getElementById("gruppkod").value,
+        utropspris = document.getElementById("utropspris").value,
+        
+    )
 
-//   function myFunction() {
-//       alert(slutDatum);
-//   }
+    console.log(
+        newAuktion.auktionID, 
+        newAuktion.titel, 
+        newAuktion.beskrivning, 
+        newAuktion.startDatum, 
+        newAuktion.slutDatum, 
+        newAuktion.gruppkod, 
+        newAuktion.utropspris 
+    );
+
+
+}
