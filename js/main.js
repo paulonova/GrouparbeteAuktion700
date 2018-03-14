@@ -52,6 +52,7 @@ class Auktion{
             this.utropspris = utropspris;
             this.bids = new Array();
             this.input = null;
+            this.message = null;
         }
 
     LoadBids()
@@ -120,8 +121,8 @@ class Auktion{
             {       
                 if (bidAmount > bidToMatch)
                 {
-                    let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };  
-                    fetch(bidURL + auktionID,
+                    let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: this.auktionID };  
+                    fetch(BidsUrl + this.auktionID,
                     {
                         method: 'POST',
                         body: JSON.stringify(jsonData),
@@ -132,11 +133,14 @@ class Auktion{
                         }
                     }).then(function (data) {
                         console.log("Bid of amount " + bidAmount + "was POSTed. Give this input to user and update bids.");
-                    })  
+                        
+                        this.message.innerHTML = "<span>SUCCESS, Bid of amount " + bidAmount + " was placed.</span>";
+                    }.bind(this))  
                 }
                 else
                 {
                     console.log("Error: Bid was not higher than current Highest Bid. Print this on the page.");
+                    this.message.innerHTML = "<span class='red'>ERROR: Bid must be higher than highest bid.</span>"
                 }
             }
         }
@@ -145,6 +149,11 @@ class Auktion{
     SetBidInput(element)
     {
         this.input = element;
+    }
+
+    SetMessageElement(element)
+    {
+        this.message = element;
     }
 }
 
@@ -300,6 +309,12 @@ function countdown(slutDatum, element){
     button.setAttribute("class", "myBotton w3-button w3-round w3-teal"); 
     button.addEventListener("click", () => auktion.CheckBid())
     div.appendChild(button);
+
+    let pMessage = document.createElement("P");
+    pMessage.setAttribute("id", "message");
+    auktion.SetMessageElement(pMessage);
+    div.appendChild(pMessage);
+
 
     countdown(auktion.slutDatum, pCountDown);
     
