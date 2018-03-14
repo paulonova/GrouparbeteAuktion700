@@ -1,0 +1,95 @@
+<html>
+  <head>
+    <title></title>
+    <style>
+    body{
+      margin:0;
+    }
+
+    #wrapper-delete {
+      text-align: center;
+    }
+
+    #newItem {
+      text-align: center;
+    }
+
+    h4{
+
+      margin:5px;
+
+    }
+
+    </style>
+  </head>
+  <body>
+
+    <div id="wrapper-delete">
+      <h2 id="head-text">Delete Auktion ID</h2>
+      <input type="text" id="input" class="id" placeholder="Write ID item to be deleted"></input>
+      <input type="submit" id="delete" value="Delete"></input>
+    </div>
+    <br>
+    <hr>
+
+    <div id="newItem">
+      <form id="head-form">
+        <h2 id="head-text">Create new item</h2>
+        <h4>Autkion ID</h4><input type="text" id="input" class="id" placeholder="Auktion ID"></input>
+        <h4>Titel</h4><input type="text" id="input" class="id" placeholder="Write a title"></input>
+        <h4>Beskrivning</h4><input type="text" id="input" class="id" placeholder="Beskrivinig"></input>
+        <h4>StartDatum</h4><input type="text" id="input" class="id" placeholder="Select a startDatum"></input>
+        <h4>SlutDatum</h4><input type="text" id="input" class="id" placeholder="Select a slutDatum"></input>
+        <h4>Gruppkod</h4><input type="text" id="input" class="id" placeholder="Write a Gruppkod"></input>
+        <h4>Utropspris</h4><input type="text" id="input" class="id" placeholder="Write a Utropspris"></input>
+      <br><br><input type="submit" id="newItem" value="Create"></input>
+      </form>
+    </div>
+
+  <script>
+
+  document.querySelector("#wrapper-delete").addEventListener("submit", adelete);
+  document.querySelector("#wrapper-delete").addEventListener("click", adelete);
+  function adelete() {
+
+      const id = document.querySelector(".id").value;
+
+      fetch(`http://nackowskis.azurewebsites.net/api/Auktion/700/${id}`, {
+        method:'Delete',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-type':'application/json'
+        },
+        body:JSON.stringify({})
+      })
+      .then((res) => res.json())
+      }
+
+
+    // get a response with all the strings
+  //  fetch('http://nackowskis.azurewebsites.net/api/Auktion/700/492').then(function(response) {
+    	// Convert to JSON
+    //	return response.json();
+    //}).then(function(j) {
+    	// Yay, `j` is a JavaScript object
+    //	console.log(j);
+    //});
+
+  //e.preventDefault();
+
+  //fetch('http://nackowskis.azurewebsites.net/api/Auktion/700/', {
+    //method:'POST',
+    //headers: {
+    //  'Accept': 'application/json, text/plain, */*',
+      //'Content-type':'application/json'
+//    },
+  //  body:JSON.stringify({title:title, body:body})
+  //})
+  //.then((res) => res.json())
+  //.then((data) => console.log(data))
+  //}
+
+  </script>
+
+  </body>
+</html>
