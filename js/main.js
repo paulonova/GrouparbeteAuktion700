@@ -59,7 +59,7 @@ class Auktion{
             
                 response.json().then( (data) =>
                 {
-                    console.log('Status Code: ' + response.status);
+                    // console.log('Status Code: ' + response.status);
             
                    for (let bid of data)
                     {
@@ -358,8 +358,7 @@ function createNewAuktion(){
         newAuktion.startDatum, 
         newAuktion.slutDatum, 
         newAuktion.gruppkod, 
-        newAuktion.utropspris 
-    );
+        newAuktion.utropspris);
 
 
 }
