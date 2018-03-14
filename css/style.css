@@ -1,4 +1,3 @@
-
 /******************************************************/
 /* BASES ***/
 /******************************************************/
@@ -19,14 +18,41 @@ body{
 /* CONTENT ***/
 /******************************************************/
 
+
 .auktion-card{
-    margin: 0 auto;
+    background-color: whitesmoke;
+    margin: 10px auto;
     width: 80%;
-    border: 1px solid darkolivegreen;
+    border: 2px solid teal;
+    box-shadow: 2px 5px 4px #888888;
     border-radius: 10px;
     padding: 20px;
 }
 
+<<<<<<< HEAD
 .red{
     color: red;
 }
+=======
+p{
+    font-size: 14px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+h3{
+    white-space: nowrap;
+    margin-bottom: 5px;
+    color: teal;
+}
+
+h3.footer{
+    color: whitesmoke;
+}
+
+.myBotton{
+    margin-left: 5px;
+}
+
+>>>>>>> paulo
