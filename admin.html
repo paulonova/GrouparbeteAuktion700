@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
+    <title>Auction - Add Auction</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3mobile.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -24,7 +24,7 @@
         </div>
         <a class="w3-bar-item w3-button" href="#"></a>
         <a class="w3-bar-item w3-button" href="#"></a>
-        <a class="w3-bar-item w3-button" href="#">Skappa nya Auktion</a>
+        <a class="w3-bar-item w3-button" href="#">Skapa ny Auktion</a>
     </nav>
 
     <header class="w3-bar w3-card w3-theme">
@@ -32,10 +32,24 @@
         <h1 class="w3-bar-item">Auktion App Grupp/700</h1>
     </header>
 
-    
+    <div id="error">
 
-    
+    </div>
+    <strong>Title:</strong><br>
+    <input type="text" id="auction-title" pattern=".{3,}" required title="Title minimum 3 characters"><br>
+    <strong>Description:</strong><br>
+    <textarea id="auction-description" pattern=".{10,255}" required title="Description should be 10 to 255 characters">
+    </textarea><br>
+    <strong>Starting Price:</strong><br>
+    <input type="number" min="1" id="auction-startingprice"><br>
 
+    <strong>Start Date</strong><br>
+    <input type="date" id="auction-datestart" disabled> <input type="time" id="auction-timestart" disabled><br>
+
+    <strong>End Date</strong><br>
+    <input type="date" id="auction-dateend"> <input type="time" id="auction-timeend"><br> 
+    <br>
+    <button id="aution-create" class="w3-button w3-round-large w3-teal">Create Auction</button>
 
     <footer class="w3-container w3-theme w3-margin-top">
         <a href="index.html"><h3>&#x3c; Back to Index</h3></a>
