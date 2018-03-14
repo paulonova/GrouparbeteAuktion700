@@ -53,7 +53,6 @@ function sendRequest(url){
             "Utropspris: " + data[i].Utropspris + " kr");
 
             createAuktionElements(auktion);
-            // countdown(data[i].SlutDatum);
         }
     });
   }
@@ -64,8 +63,9 @@ function sendRequest(url){
 }
 
 //Function CountDown..
-function countdown(slutDatum){
-    
+function countdown(slutDatum, element){
+    console.log(slutDatum);
+    console.log(element);
     var countDownDate = new Date(slutDatum).getTime();
     console.log("countDownDate " + countDownDate);
 
@@ -79,12 +79,12 @@ function countdown(slutDatum){
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    document.getElementById("countdown").innerHTML = "Countdown: " + days + "d " + hours + "h "
+    element.innerHTML = "Countdown: " + days + "d " + hours + "h "
     + minutes + "m " + seconds + "s ";
 
     if (distance < 0) {
         clearInterval(x);
-        document.getElementById("countdown").innerHTML = "EXPIRED";
+        element.innerHTML = "EXPIRED";
     }
 
   }, 1000);
@@ -163,6 +163,7 @@ function countdown(slutDatum){
     button.setAttribute("class", "myBotton w3-button w3-round w3-teal"); 
     div.appendChild(button);
 
+    countdown(auktion.slutDatum, pCountDown);
     
   }
 
