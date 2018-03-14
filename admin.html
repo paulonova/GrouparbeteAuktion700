@@ -32,25 +32,6 @@
         <h1 class="w3-bar-item">Auktion App Grupp/700</h1>
     </header>
 
-    <!-- <strong>Title:</strong><br>
-    <input type="text" id="auction-title" pattern=".{3,}" required title="Title minimum 3 characters"><br>
-    <strong>Description:</strong><br>
-    <textarea id="auction-description" pattern=".{10,255}" required title="Description should be 10 to 255 characters">
-    </textarea><br>
-    <strong>Starting Price:</strong><br>
-    <input type="number" min="1" id="auction-startingprice"><br>
-
-    <strong>Start Date</strong><br>
-    <input type="date" id="auction-datestart" disabled> <input type="time" id="auction-timestart" disabled><br>
-
-    <strong>End Date</strong><br>
-    <input type="date" id="auction-dateend"> <input type="time" id="auction-timeend"><br> 
-    <br>
-    <button id="aution-create" class="w3-button w3-round-large w3-teal">Create Auction</button> -->
-
-
-    <!-- Angel Formulary -->
-          
     <section id="newItem">
             <div class="w3-container w3-dark-gray"><h2 id="head-text">Create new item</h2></div>
 
@@ -76,7 +57,8 @@
             <label>Utropspris</label>
             <input type="text" id="utropspris" class="input-field w3-input" placeholder="Utropspris"></input>
 
-            <input class="myBotton w3-button w3-round w3-teal" type="button" id="create-aukt-btn" value="Create Auktion"></input>
+            <input class="myBotton w3-button w3-round w3-teal" onclick="createNewAuktion()"
+                type="button" id="create-aukt-btn" value="Create Auktion"></input>
         </form>
     </section>
     <br>

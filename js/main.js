@@ -40,12 +40,14 @@ class Auktion{
             this.slutDatum = slutDatum;
             this.gruppkod = gruppkod;
             this.utropspris = utropspris;
+
             this.bids = new Array();
             this.input = null;
         }
 
     LoadBids()
     {
+
         fetch(BidsUrl + this.auktionID).then(
             function(response) 
             {
@@ -329,4 +331,35 @@ function CheckBid()
             }
         }
     }
+}
+
+
+/**************************************************/
+/** PAULO ==>  CREATE AUKTION METHODS */
+/**************************************************/
+
+function createNewAuktion(){
+
+    var newAuktion = new Auktion(
+        auktionID = document.getElementById("auktion-id").value,
+        titel = document.getElementById("title").value,
+        beskrivning = document.getElementById("beskrivning").value,
+        startDatum = document.getElementById("startDatum").value,
+        slutDatum = document.getElementById("slutDatum").value,
+        gruppkod = document.getElementById("gruppkod").value,
+        utropspris = document.getElementById("utropspris").value,
+        
+    )
+
+    console.log(
+        newAuktion.auktionID, 
+        newAuktion.titel, 
+        newAuktion.beskrivning, 
+        newAuktion.startDatum, 
+        newAuktion.slutDatum, 
+        newAuktion.gruppkod, 
+        newAuktion.utropspris 
+    );
+
+
 }
