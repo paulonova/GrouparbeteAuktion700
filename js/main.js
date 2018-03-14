@@ -1,5 +1,6 @@
 
 const   AuktionUrl = "http://nackowskis.azurewebsites.net/api/Auktion/700";
+const   BidsUrl = "http://nackowskis.azurewebsites.net/api/Bud/700/";
 var     auktionID;
 var     titel;
 var     beskrivning;
