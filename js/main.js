@@ -177,3 +177,22 @@ function CheckBid()
         }
     }
 }
+
+
+
+
+
+//function Delete
+
+//function adelete() {
+
+//  fetch('http://nackowskis.azurewebsites.net/api/Auktion/700/501', {
+  //  method:'Delete',
+//    headers: {
+  //    'Accept': 'application/json, text/plain, */*',
+//      'Content-type':'application/json'
+  //  },
+//    body:JSON.stringify({})
+//  })
+//  .then((res) => res.json())
+//  }
