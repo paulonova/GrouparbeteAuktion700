@@ -6,11 +6,9 @@ var     startDatum;
 var     slutDatum;
 var     gruppkod = 700;
 var     utropspris;
-
 var     countdown;
-
-var budID;
-var summa;
+var     budID;
+var     summa;
 
 
 
@@ -166,31 +164,3 @@ function countdown(slutDatum, element){
     countdown(auktion.slutDatum, pCountDown);
     
   }
-
-//   window.onload = function(){  
-
-//     //Auktion
-//     auktionID = document.getElementById("auktionID");
-//     titel = document.getElementById("title");
-//     beskrivning = document.getElementById("beskrivning");
-//     startDatum = document.getElementById("startDatum");
-//     slutDatum = document.getElementById("slutDatum");
-//     gruppkod = document.getElementById("gruppkod");
-//     utropspris = document.getElementById("utropspris");
-
-//   }
-
-//   function updateAuktionCard(auktion){
-//     auktionID.innerHTML = auktion.auktionID;
-//     titel.innerHTML = auktion.titel;
-//     beskrivning.innerHTML = auktion.beskrivning;
-//     startDatum.innerHTML = auktion.startDatum;
-//     slutDatum.innerHTML = auktion.slutDatum;
-//     utropspris.innerHTML = auktion.utropspris;
-//     gruppkod.innerHTML = auktion.gruppkod;
-
-//   }
-
-//   function myFunction() {
-//       alert(slutDatum);
-//   }
