@@ -47,18 +47,18 @@ class Auktion{
     LoadBids()
     {
         fetch(BidsUrl + this.auktionID).then(
-            function(response) 
+            function(response)
             {
-                if (response.status !== 200) 
+                if (response.status !== 200)
                 {
                     console.log('Looks like there was a problem. Status Code: ' + response.status);
                     return;
                 }
-            
+
                 response.json().then( (data) =>
                 {
                     console.log('Status Code: ' + response.status);
-            
+
                    for (let bid of data)
                     {
                         let newBid = new Bid(
@@ -69,9 +69,9 @@ class Auktion{
 
                         this.bids.push(newBid);
                     }
-                    
+
                     this.SortBids();
-                    
+
                     createAuktionElements(this);
                 })
         }.bind(this)
@@ -81,7 +81,7 @@ class Auktion{
 
     }
 
-    SortBids() 
+    SortBids()
     {
         if (this.bids.length > 0)
         {
@@ -96,33 +96,33 @@ class Auktion{
            return this.bids[0].summa;
         }
 
-        return 0; 
+        return 0;
     }
 
     CheckBid()
     {
         let bidToMatch = this.GetHighestBid();
-        
+
         if (this.input.value.length > 0)
         {
             let bidAmount = parseInt(this.input.value);
             if (Number.isInteger(bidAmount) == true)
-            {       
+            {
                 if (bidAmount > bidToMatch)
                 {
-                    let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };  
+                    let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };
                     fetch(bidURL + auktionID,
                     {
                         method: 'POST',
                         body: JSON.stringify(jsonData),
-                        headers: 
+                        headers:
                         {
                                 'Accept': 'application/json, text/plain, */*',
                                 'Content-Type': 'application/json'
                         }
                     }).then(function (data) {
                         console.log("Bid of amount " + bidAmount + "was POSTed. Give this input to user and update bids.");
-                    })  
+                    })
                 }
                 else
                 {
@@ -214,7 +214,7 @@ function countdown(slutDatum, element){
 }
 
   function createAuktionElements(auktion){
-    
+
     //The Container
     let container = document.getElementById("container");
     container.setAttribute("class", "app-container");
@@ -289,13 +289,13 @@ function countdown(slutDatum, element){
     //input button
     let button = document.createElement("INPUT");
     button.setAttribute("type", "button");
-    button.setAttribute("value", "Ge ett Bud"); 
-    button.setAttribute("class", "myBotton w3-button w3-round w3-teal"); 
+    button.setAttribute("value", "Ge ett Bud");
+    button.setAttribute("class", "myBotton w3-button w3-round w3-teal");
     button.addEventListener("click", () => auktion.CheckBid())
     div.appendChild(button);
 
     countdown(auktion.slutDatum, pCountDown);
-    
+
   }
 
 
@@ -310,23 +310,46 @@ function CheckBid()
     {
         let bidAmount = parseInt(inputBud.value);
         if (Number.isInteger(bidAmount) == true)
-        {       
+        {
             if (bidAmount > bidToMatch)
             {
-                let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };  
+                let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };
                 fetch(bidURL + auktionID,
                 {
                     method: 'POST',
                     body: JSON.stringify(jsonData),
-                    headers: 
+                    headers:
                     {
                             'Accept': 'application/json, text/plain, */*',
                             'Content-Type': 'application/json'
                     }
                 }).then(function (data) {
                     console.log('Request success: ', 'posten skapad');
-                })  
+                })
             }
         }
     }
 }
+
+
+
+
+//Auktion delete
+
+
+document.querySelector("#wrapper-delete").addEventListener("submit", adelete);
+document.querySelector("#wrapper-delete").addEventListener("click", adelete);
+function adelete() {
+
+    const id = document.querySelector("#auktion-del-id").value;
+
+    fetch(`http://nackowskis.azurewebsites.net/api/Auktion/700/${id}`, {
+      method:'Delete',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-type':'application/json'
+      },
+      body:JSON.stringify({})
+    })
+    .then((res) => res.json())
+    }
