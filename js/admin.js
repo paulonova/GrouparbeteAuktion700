@@ -39,10 +39,7 @@ function deleteAuktion(){
         response.json().then(function(todos){
           todos.forEach(li)
         })
-          })
-
-
-
+      })
 }
 
 
