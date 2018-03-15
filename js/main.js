@@ -44,9 +44,11 @@ class Auktion{
             this.bids = new Array();
             this.input = null;
             this.message = null;
+
+            this.pHighestBid = null;
         }
 
-    LoadBids()
+    LoadBids(createAuktionCardFlag)
     {
 
         fetch(BidsUrl + this.auktionID).then(
@@ -75,13 +77,25 @@ class Auktion{
                     
                     this.SortBids();
                     
-                    createAuktionElements(this);
+                    if (createAuktionCardFlag == true)
+                    {
+                        createAuktionElements(this);
+                    }
+                    else
+                    {
+                        this.pHighestBid.innerHTML = "Högsta Bud: " + this.GetHighestBid() + "KR";
+                    }
                 })
         }.bind(this)
         ).catch(function(err) {
         console.log('Fetch Error :-S', err);
       });
 
+    }
+
+    ClearBids()
+    {
+        this.bids = new Array();
     }
 
     SortBids() 
@@ -108,10 +122,19 @@ class Auktion{
         
         if (this.input.value.length > 0)
         {
+            if (this.IsExpired())
+            {                
+                this.message.innerHTML = "<span class='red'>ERROR: Auction expired and can't take new bids.</span>";
+                return;
+            }
             let bidAmount = parseInt(this.input.value);
             if (Number.isInteger(bidAmount) == true)
             {       
-                if (bidAmount > bidToMatch)
+                if (bidAmount < this.utropspris)
+                {
+                    this.message.innerHTML = "<span class='red'>ERROR: Bid must be higher than starting bid.</span>";
+                }
+                else if (bidAmount > bidToMatch)
                 {
                     let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: this.auktionID };  
                     fetch(BidsUrl + this.auktionID,
@@ -124,15 +147,21 @@ class Auktion{
                                 'Content-Type': 'application/json'
                         }
                     }).then(function (data) {
-                        console.log("Bid of amount " + bidAmount + "was POSTed. Give this input to user and update bids.");
+                        console.log("Bid of amount " + bidAmount + " was POSTed. Give this input to user and update bids.");
                         
                         this.message.innerHTML = "<span>SUCCESS, Bid of amount " + bidAmount + " was placed.</span>";
+
+                        this.ClearBids();
+                        this.LoadBids(false);
+
+                        this.input.value = "";
+
                     }.bind(this))  
                 }
                 else
                 {
                     console.log("Error: Bid was not higher than current Highest Bid. Print this on the page.");
-                    this.message.innerHTML = "<span class='red'>ERROR: Bid must be higher than highest bid.</span>"
+                    this.message.innerHTML = "<span class='red'>ERROR: Bid must be higher than highest bid.</span>";
                 }
             }
         }
@@ -146,6 +175,16 @@ class Auktion{
     SetMessageElement(element)
     {
         this.message = element;
+    }
+
+    IsExpired()
+    {
+        return (new Date(this.slutDatum).getTime() - new Date().getTime() <= 0);
+    }
+
+    SetHighestBidElement(element)
+    {
+        this.pHighestBid = element;
     }
 }
 
@@ -184,7 +223,7 @@ function sendRequest(url){
             data[i].Gruppkod,
             data[i].Utropspris);
 
-            auktion.LoadBids();
+            auktion.LoadBids(true);
 
             auktionManager.AddAuktion(auktion);
         }
@@ -197,11 +236,8 @@ function sendRequest(url){
 }
 
 //Function CountDown..
-function countdown(slutDatum, element){
-    console.log(slutDatum);
-    console.log(element);
+function countdown(slutDatum, element, inputBid, buttonBid) {
     var countDownDate = new Date(slutDatum).getTime();
-    console.log("countDownDate " + countDownDate);
 
     var x = setInterval(function() {
 
@@ -219,6 +255,8 @@ function countdown(slutDatum, element){
     if (distance < 0) {
         clearInterval(x);
         element.innerHTML = "EXPIRED";
+        inputBid.disabled = true;
+        buttonBid.disabled = true;
     }
 
   }, 1000);
@@ -286,9 +324,10 @@ function countdown(slutDatum, element){
 
     let pHogstaBud = document.createElement("P");
     pHogstaBud.setAttribute("id", "hogstabud");
-    let hogstaBudText = document.createTextNode("Högsta Bud: " + auktion.GetHighestBid());
+    let hogstaBudText = document.createTextNode("Högsta Bud: " + auktion.GetHighestBid() + "KR");
     pHogstaBud.appendChild(hogstaBudText);
     div.appendChild(pHogstaBud);
+    auktion.SetHighestBidElement(pHogstaBud);
 
     //Input text
     let txtArea = document.createElement("INPUT");
@@ -310,42 +349,14 @@ function countdown(slutDatum, element){
     auktion.SetMessageElement(pMessage);
     div.appendChild(pMessage);
 
-
-    countdown(auktion.slutDatum, pCountDown);
-    
-  }
-
-
-
-function CheckBid()
-{
-    let bidURL = "http://nackowskis.azurewebsites.net/api/Bud/700/";
-    let bidToMatch = 0;
-    let auktionID = 7; //This needs to be updated to valid ID dependentant on auction
-
-    if (inputBud.value.length > 0)
+    if (auktion.IsExpired())
     {
-        let bidAmount = parseInt(inputBud.value);
-        if (Number.isInteger(bidAmount) == true)
-        {       
-            if (bidAmount > bidToMatch)
-            {
-                let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };  
-                fetch(bidURL + auktionID,
-                {
-                    method: 'POST',
-                    body: JSON.stringify(jsonData),
-                    headers: 
-                    {
-                            'Accept': 'application/json, text/plain, */*',
-                            'Content-Type': 'application/json'
-                    }
-                }).then(function (data) {
-                    console.log('Request success: ', 'posten skapad');
-                })  
-            }
-        }
-    }
+       txtArea.disabled = true;
+       button.disabled = true;
+    } 
+
+    countdown(auktion.slutDatum, pCountDown, txtArea, button);
+    
 }
 
 
