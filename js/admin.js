@@ -54,17 +54,17 @@ function createNewAuktion(){
         slutDatum = document.getElementById("slutDatum").value,
         gruppkod = document.getElementById("gruppKod").value,
         utropspris = document.getElementById("utropsPris").value,
-        
+
     )
 
     console.log(
-        newAuktion.auktionID, 
-        newAuktion.titel, 
-        newAuktion.beskrivning, 
-        newAuktion.startDatum, 
-        newAuktion.slutDatum, 
-        newAuktion.gruppkod, 
-        newAuktion.utropspris 
+        newAuktion.auktionID,
+        newAuktion.titel,
+        newAuktion.beskrivning,
+        newAuktion.startDatum,
+        newAuktion.slutDatum,
+        newAuktion.gruppkod,
+        newAuktion.utropspris
     );
 
 
@@ -77,7 +77,7 @@ function createNewAuktion(){
 //Auktion delete -Angel
 
 document.querySelector("#wrapper-delete").addEventListener("submit", adelete);
-document.querySelector("#wrapper-delete").addEventListener("click", adelete);
+document.querySelector("#del-btn").addEventListener("click", adelete);
 function adelete() {
 
     const id = document.querySelector("#auktion-del-id").value;
@@ -91,10 +91,12 @@ function adelete() {
       body:JSON.stringify({})
     })
     .then((res) => res.json())
+
+    document.getElementById("auktion-del-id").value=""
     }
 
 
-//create new auktion -Angel
+//create new auktion -Angel arbete
 
 document.querySelector("#head-form").addEventListener("submit", creating);
 document.querySelector("#create-aukt-btn").addEventListener("click", creating);
@@ -128,5 +130,15 @@ function creating() {
     body:JSON.stringify(formdata)
   })
   .then((res) => res.json())
-  }
 
+
+
+  document.getElementById("auktion-id").value="";
+  document.getElementById("title").value="";
+  document.getElementById("beskrivning").value=""
+  document.getElementById("gruppkod").value=""
+  document.getElementById("utropspris").value=""
+
+
+
+  }
