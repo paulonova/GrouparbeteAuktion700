@@ -23,7 +23,7 @@ class Auktion{
 function deleteAuktion(){
     var idInput = document.getElementById("auktionId").value;
     console.log(idInput);
-    var url = "";
+    // var url = "";
 }
 
 
