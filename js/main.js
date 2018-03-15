@@ -333,7 +333,7 @@ function CheckBid()
 
 
 
-//Auktion delete
+//Auktion delete -Angel
 
 document.querySelector("#wrapper-delete").addEventListener("submit", adelete);
 document.querySelector("#wrapper-delete").addEventListener("click", adelete);
@@ -353,7 +353,7 @@ function adelete() {
     }
 
 
-//create new auktion
+//create new auktion -Angel
 
 document.querySelector("#head-form").addEventListener("submit", creating);
 document.querySelector("#create-aukt-btn").addEventListener("click", creating);
