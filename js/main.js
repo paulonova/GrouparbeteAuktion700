@@ -341,6 +341,8 @@ document.querySelector("#wrapper-delete").addEventListener("submit", adelete);
 document.querySelector("#wrapper-delete").addEventListener("click", adelete);
 function adelete() {
 
+
+
     const id = document.querySelector("#auktion-del-id").value;
 
     fetch(`http://nackowskis.azurewebsites.net/api/Auktion/700/${id}`, {
@@ -352,6 +354,8 @@ function adelete() {
       body:JSON.stringify({})
     })
     .then((res) => res.json())
+
+    document.getElementById("auktion-del-id").value = "";
     }
 
 
