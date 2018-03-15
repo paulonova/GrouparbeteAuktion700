@@ -393,4 +393,11 @@ function creating() {
     body:JSON.stringify(formdata)
   })
   .then((res) => res.json())
+
+
+  document.getElementById("auktion-id").value = "";
+  document.getElementById("title").value = "";
+  document.getElementById("beskrivning").value = "";
+  document.getElementById("gruppkod").value = "";
+  document.getElementById("utropspris").value = "";
   }
