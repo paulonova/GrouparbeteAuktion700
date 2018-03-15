@@ -51,15 +51,10 @@ class Auktion{
                     console.log('Looks like there was a problem. Status Code: ' + response.status);
                     return;
                 }
-            
-<<<<<<< HEAD
-                response.json().then( (data) =>
-                {
-=======
+
                 response.json().then( (data) =>{
->>>>>>> paulo
                     // console.log('Status Code: ' + response.status);
-            
+
                    for (let bid of data)
                     {
                         let newBid = new Bid(
@@ -329,4 +324,3 @@ function CheckBid(){
         }
     }
 }
-
