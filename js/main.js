@@ -136,6 +136,7 @@ class Auktion{
 
             this.pHogstaBud = null;
             this.pAllaBud = null;
+            this.aAllaBud = null;
         }
 
     LoadBids(createAuktionCardFlag)
@@ -171,7 +172,10 @@ class Auktion{
                     }
                     else
                     {
-                        this.pHogstaBud.innerHTML = "Högsta Bud: " + this.GetHighestBid() + " kr";
+                        this.pHogstaBud.innerHTML = "<strong>Högsta Bud:</strong> " + this.GetHighestBid() + " kr";
+                        
+                        this.aAllaBud.innerHTML = "Visa Alla Bud (" + this.bids.length + "st)";
+                        this.pAllaBud.innerHTML = "";
                     }
                 })
         }.bind(this)
@@ -237,7 +241,7 @@ class Auktion{
                     }).then(function (data) {
                         console.log("Bid of amount " + bidAmount + " was POSTed. Give this input to user and update bids.");
                         
-                        this.message.innerHTML = "<span>SUCCESS, Bid of amount " + bidAmount + " was placed.</span>";
+                        this.message.innerHTML = "<span><strong>SUCCESS</strong>, Bid of amount " + bidAmount + " was placed.</span>";
 
                         this.ClearBids();
                         this.LoadBids(false);
@@ -275,9 +279,10 @@ class Auktion{
         this.pHogstaBud = element;
     }
 
-    SetShowAllBidsElement(element)
+    SetShowAllBidsElement(elementp, elementa)
     {
-        this.pAllaBud = element;
+        this.pAllaBud = elementp;
+        this.aAllaBud = elementa;
     }
 
     ShowAllBids()
@@ -289,8 +294,10 @@ class Auktion{
             {
                 this.pAllaBud.innerHTML += "<strong>BudID:</strong> " + bid.budID + " <strong>Summa:</strong> " + bid.summa + "<br>";
             }
-
-            console.log(this.pAllaBud);
+        }
+        if (this.aAllaBud !== null)
+        {
+            this.aAllaBud.innerHTML = "Visa Alla Bud (" + this.bids.length + "st)";
         }
     }
 }
@@ -434,14 +441,13 @@ function countdown(slutDatum, element, inputBid, buttonBid) {
     {
         let aAllaBud = document.createElement("a");
         aAllaBud.setAttribute("href", "javascript:void(0)");
-        aAllaBudText = document.createTextNode("Visa Alla Bud (" + auktion.bids.length + "st)");
-        aAllaBud.appendChild(aAllaBudText);
+        aAllaBud.innerHTML = "Visa Alla Bud (" + auktion.bids.length + "st)";
         aAllaBud.addEventListener("click", () => auktion.ShowAllBids());
         div.appendChild(aAllaBud);
 
         let pAllaBud = document.createElement("p");
         div.appendChild(pAllaBud);
-        auktion.SetShowAllBidsElement(pAllaBud);
+        auktion.SetShowAllBidsElement(pAllaBud, aAllaBud);
         
     }
 
