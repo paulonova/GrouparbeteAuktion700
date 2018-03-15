@@ -5,7 +5,7 @@ var     titel;
 var     beskrivning;
 var     startDatum;
 var     slutDatum;
-var     gruppkod = 700;
+var     gruppkod;
 var     utropspris;
 var     countdown;
 var     budID;
@@ -17,13 +17,10 @@ var buttonSubmitBud;
 
 
 class AuktionManager {
-    constructor()
-    {
+    constructor() {
         this.auctions = new Array();
     }
-
-    AddAuktion(auktion)
-    {
+    AddAuktion(auktion){
         this.auctions.push(auktion);
     }
 }
@@ -45,21 +42,18 @@ class Auktion{
             this.input = null;
         }
 
-    LoadBids()
-    {
+    LoadBids(){
 
         fetch(BidsUrl + this.auktionID).then(
-            function(response) 
-            {
-                if (response.status !== 200) 
-                {
+            function(response){
+
+                if (response.status !== 200){
                     console.log('Looks like there was a problem. Status Code: ' + response.status);
                     return;
                 }
             
-                response.json().then( (data) =>
-                {
-                    console.log('Status Code: ' + response.status);
+                response.json().then( (data) =>{
+                    // console.log('Status Code: ' + response.status);
             
                    for (let bid of data)
                     {
@@ -83,16 +77,16 @@ class Auktion{
 
     }
 
-    SortBids() 
-    {
+    SortBids(){
+
         if (this.bids.length > 0)
         {
             this.bids.sort(function(a, b) { return b.summa-a.summa; });
         }
     }
 
-    GetHighestBid()
-    {
+    GetHighestBid(){
+
         if (this.bids.length > 0)
         {
            return this.bids[0].summa;
@@ -141,8 +135,7 @@ class Auktion{
 }
 
 class Bid {
-    constructor(budID, summa, auktionID)
-    {
+    constructor(budID, summa, auktionID){
         this.budID = budID;
         this.summa = summa;
         this.auktionID = auktionID;
@@ -163,7 +156,6 @@ function sendRequest(url){
       // Examine the text in the response
       response.json()
       .then(function(data) {
-        console.log('Status Code: ' + response.status);
 
         for (let i = 0; i < data.length; i++) {
           var auktion = new Auktion(
@@ -189,10 +181,10 @@ function sendRequest(url){
 
 //Function CountDown..
 function countdown(slutDatum, element){
-    console.log(slutDatum);
-    console.log(element);
+    // console.log(slutDatum);
+    // console.log(element);
     var countDownDate = new Date(slutDatum).getTime();
-    console.log("countDownDate " + countDownDate);
+    // console.log("countDownDate " + countDownDate);
 
     var x = setInterval(function() {
 
@@ -302,8 +294,8 @@ function countdown(slutDatum, element){
 
 
 
-function CheckBid()
-{
+function CheckBid(){
+
     let bidURL = "http://nackowskis.azurewebsites.net/api/Bud/700/";
     let bidToMatch = 0;
     let auktionID = 7; //This needs to be updated to valid ID dependentant on auction
@@ -334,32 +326,3 @@ function CheckBid()
 }
 
 
-/**************************************************/
-/** PAULO ==>  CREATE AUKTION METHODS */
-/**************************************************/
-
-function createNewAuktion(){
-
-    var newAuktion = new Auktion(
-        auktionID = document.getElementById("auktion-id").value,
-        titel = document.getElementById("title").value,
-        beskrivning = document.getElementById("beskrivning").value,
-        startDatum = document.getElementById("startDatum").value,
-        slutDatum = document.getElementById("slutDatum").value,
-        gruppkod = document.getElementById("gruppkod").value,
-        utropspris = document.getElementById("utropspris").value,
-        
-    )
-
-    console.log(
-        newAuktion.auktionID, 
-        newAuktion.titel, 
-        newAuktion.beskrivning, 
-        newAuktion.startDatum, 
-        newAuktion.slutDatum, 
-        newAuktion.gruppkod, 
-        newAuktion.utropspris 
-    );
-
-
-}
