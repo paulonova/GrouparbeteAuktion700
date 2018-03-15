@@ -26,6 +26,16 @@ class AuktionManager {
     {
         this.auctions.push(auktion);
     }
+    
+    SortByEndDate()
+    {
+        this.auctions.sort(function(a, b) { return new Date(b.slutDatum).getTime() - new Date(a.slutDatum).getTime(); });
+    }
+
+    SortByStartingPrice()
+    {
+        this.auctions.sort(function(a, b) { return b.utropspris - a.utropspris; });
+    }
 }
 
 var auktionManager = new AuktionManager();
@@ -45,7 +55,8 @@ class Auktion{
             this.input = null;
             this.message = null;
 
-            this.pHighestBid = null;
+            this.pHogstaBud = null;
+            this.pAllaBud = null;
         }
 
     LoadBids(createAuktionCardFlag)
@@ -83,7 +94,7 @@ class Auktion{
                     }
                     else
                     {
-                        this.pHighestBid.innerHTML = "Högsta Bud: " + this.GetHighestBid() + "KR";
+                        this.pHogstaBud.innerHTML = "Högsta Bud: " + this.GetHighestBid() + "KR";
                     }
                 })
         }.bind(this)
@@ -184,7 +195,26 @@ class Auktion{
 
     SetHighestBidElement(element)
     {
-        this.pHighestBid = element;
+        this.pHogstaBud = element;
+    }
+
+    SetShowAllBidsElement(element)
+    {
+        this.pAllaBud = element;
+    }
+
+    ShowAllBids()
+    {
+        if (this.pAllaBud !== null)
+        {
+            this.pAllaBud.innerHTML = "";
+            for (let bid of this.bids)
+            {
+                this.pAllaBud.innerHTML += "<strong>BudID:</strong> " + bid.budID + " <strong>Summa:</strong> " + bid.summa + "<br>";
+            }
+
+            console.log(this.pAllaBud);
+        }
     }
 }
 
@@ -249,7 +279,7 @@ function countdown(slutDatum, element, inputBid, buttonBid) {
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    element.innerHTML = "Countdown: " + days + "d " + hours + "h "
+    element.innerHTML = "<strong>Countdown:</strong> " + days + "d " + hours + "h "
     + minutes + "m " + seconds + "s ";
 
     if (distance < 0) {
@@ -282,52 +312,61 @@ function countdown(slutDatum, element, inputBid, buttonBid) {
 
     let pauktionId = document.createElement("P");
     pauktionId.setAttribute("id", "auktionID");
-    let auktionIDText = document.createTextNode("AuktionID: " + auktion.auktionID);
-    pauktionId.appendChild(auktionIDText);
+    pauktionId.innerHTML = "<strong>AuktionID:</strong> " + auktion.auktionID;
     div.appendChild(pauktionId);
 
     let pBeskrivning = document.createElement("P");
     pBeskrivning.setAttribute("id", "beskrivning");
-    let beskrivText = document.createTextNode("Beskrivning: " + auktion.beskrivning);
-    pBeskrivning.appendChild(beskrivText);
+    pBeskrivning.innerHTML = "<strong>Beskrivning:</strong> " + auktion.beskrivning;
     div.appendChild(pBeskrivning);
 
     let pStartDatum = document.createElement("P");
     pStartDatum.setAttribute("id", "startDatum");
-    let startText = document.createTextNode("StartDatum: " + auktion.startDatum);
-    pStartDatum.appendChild(startText);
+    pStartDatum.innerHTML = "<strong>StartDatum:</strong> " + auktion.startDatum;
     div.appendChild(pStartDatum);
 
     let pSlutDatum = document.createElement("P");
     pSlutDatum.setAttribute("id", "slutDatum");
-    let slutText = document.createTextNode("SlutDatum: " + auktion.slutDatum);
-    pSlutDatum.appendChild(slutText);
+    pSlutDatum.innerHTML = "<strong>SlutDatum:</strong> " + auktion.slutDatum;
     div.appendChild(pSlutDatum);
 
     let pGruppKod = document.createElement("P");
     pGruppKod.setAttribute("id", "gruppkod");
-    let gruppText = document.createTextNode("GruppKod: " + auktion.gruppkod);
-    pGruppKod.appendChild(gruppText);
+    pGruppKod.innerHTML = "<strong>GruppKod:</strong> " + auktion.gruppkod;
     div.appendChild(pGruppKod);
 
     let pUtropspris = document.createElement("P");
     pUtropspris.setAttribute("id", "utropspris");
-    let utropsText = document.createTextNode("Utropspris: " + auktion.utropspris + "KR");
-    pUtropspris.appendChild(utropsText);
+    pUtropspris.innerHTML = "<strong>Utropspris:</strong> " + auktion.utropspris + "KR";
     div.appendChild(pUtropspris);
 
     let pCountDown = document.createElement("P");
     pCountDown.setAttribute("id", "countdown");
-    let countText = document.createTextNode("Countdown: ");
-    pCountDown.appendChild(countText);
+    pCountDown.innerHTML = "<strong>Countdown: </strong>";
     div.appendChild(pCountDown);
 
     let pHogstaBud = document.createElement("P");
     pHogstaBud.setAttribute("id", "hogstabud");
-    let hogstaBudText = document.createTextNode("Högsta Bud: " + auktion.GetHighestBid() + "KR");
-    pHogstaBud.appendChild(hogstaBudText);
+    pHogstaBud.innerHTML = "<strong>Högsta Bud:</strong> " + auktion.GetHighestBid() + "KR";
     div.appendChild(pHogstaBud);
+
     auktion.SetHighestBidElement(pHogstaBud);
+
+    
+    if (!auktion.IsExpired())
+    {
+        let aAllaBud = document.createElement("a");
+        aAllaBud.setAttribute("href", "javascript:void(0)");
+        aAllaBudText = document.createTextNode("Visa Alla Bud (" + auktion.bids.length + ")");
+        aAllaBud.appendChild(aAllaBudText);
+        aAllaBud.addEventListener("click", () => auktion.ShowAllBids());
+        div.appendChild(aAllaBud);
+
+        let pAllaBud = document.createElement("p");
+        div.appendChild(pAllaBud);
+        auktion.SetShowAllBidsElement(pAllaBud);
+        
+    }
 
     //Input text
     let txtArea = document.createElement("INPUT");
