@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-teal.css">
     <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
+    <script src="js/main.js" defer></script>
     <script src="js/admin.js" defer></script>
 </head>
 
@@ -32,12 +33,15 @@
         <h1 class="w3-bar-item">Auktion App Grupp/700</h1>
     </header>
 
+    
+    <!-- Angel Formulary -->
+
     <section id="newItem">
             <div class="w3-container w3-dark-gray"><h2 id="head-text">Create new item</h2></div>
 
-        <form id="head-form" class=" form-container w3-container">            
+        <form id="head-form" class=" form-container w3-container">
             <label>Autkion ID</label>
-            <input type="text" id="auktionId" class="input-field w3-input" placeholder="Auktion ID"></input>
+            <input type="text" id="auktion-id" class="input-field w3-input" placeholder="Auktion ID"></input>
 
             <label>Titel</label>
             <input type="text" id="title" class="input-field w3-input" placeholder="Title"></input>
@@ -46,41 +50,33 @@
             <input type="text" id="beskrivning" class="input-field w3-input" placeholder="Beskrivinig"></input>
 
             <label>StartDatum</label>
-            <input type="text" id="startDatum" class="input-field w3-input" placeholder="Select a startDatum"></input>
+            <input type="text" id="startdatum" class="input-field w3-input" placeholder="2018-03-10T00:00:00"></input>
 
             <label>SlutDatum</label>
-            <input type="text" id="slutDatum" class="input-field w3-input" placeholder="Select a slutDatum"></input>
+            <input type="text" id="slutdatum" class="input-field w3-input" placeholder="2018-03-10T00:00:00"></input>
 
             <label>Gruppkod</label>
-            <input type="text" id="gruppKod" class="input-field w3-input" placeholder="Gruppkod"></input>
+            <input type="text" id="gruppkod" class="input-field w3-input" placeholder="Gruppkod"></input>
 
             <label>Utropspris</label>
-            <input type="text" id="utropsPris" class="input-field w3-input" placeholder="Utropspris"></input>
+            <input type="text" id="utropspris" class="input-field w3-input" placeholder="Utropspris"></input>
 
-            <input class="myBotton w3-button w3-round w3-teal" 
-                type="button" id="createAuktBtn" value="Create Auktion"></input>
+            <input class="myBotton w3-button w3-round w3-teal" type="button" id="create-aukt-btn" value="Create Auktion"></input>
         </form>
     </section>
     <br>
 
     <div class="w3-container w3-dark-gray"><h2 id="del-auktion">Delete Auktion</h2></div>
-    <section class="delete-continer w3-container" id="wrapper-delete"> 
-
+    <section class="delete-continer w3-container" id="wrapper-delete">
             <label>Delete Auktion by ID</label>
-            <input type="text" id="auktionDelId"  class="input-field w3-input" 
-                    placeholder="Write your auktion id.."></input>
-
-            <input class="myBotton w3-button w3-round w3-teal" onclick="deleteAuktion()" 
-                    type="button" id="btnDel" value="Delete"></input>
+            <input type="text" id="auktion-del-id" class="input-field w3-input" placeholder="Write your auktion id.."></input>
+            <input class="myBotton w3-button w3-round w3-teal" type="button" id="del-btn" value="Delete"></input>
     </section>
-          
-
-
 
     <footer class="w3-container w3-theme w3-margin-top">
         <a href="index.html"><h3 class="footer">&#x3c; Back to Index</h3></a>
     </footer>
-          
+
     <script src="js/slidebar.js"></script>
 </body>
 

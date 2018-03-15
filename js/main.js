@@ -65,9 +65,9 @@ class Auktion{
 
                         this.bids.push(newBid);
                     }
-                    
+
                     this.SortBids();
-                    
+
                     createAuktionElements(this);
                 })
         }.bind(this)
@@ -77,8 +77,8 @@ class Auktion{
 
     }
 
-    SortBids(){
-
+    SortBids()
+    {
         if (this.bids.length > 0)
         {
             this.bids.sort(function(a, b) { return b.summa-a.summa; });
@@ -92,33 +92,33 @@ class Auktion{
            return this.bids[0].summa;
         }
 
-        return 0; 
+        return 0;
     }
 
     CheckBid()
     {
         let bidToMatch = this.GetHighestBid();
-        
+
         if (this.input.value.length > 0)
         {
             let bidAmount = parseInt(this.input.value);
             if (Number.isInteger(bidAmount) == true)
-            {       
+            {
                 if (bidAmount > bidToMatch)
                 {
-                    let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };  
+                    let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };
                     fetch(bidURL + auktionID,
                     {
                         method: 'POST',
                         body: JSON.stringify(jsonData),
-                        headers: 
+                        headers:
                         {
                                 'Accept': 'application/json, text/plain, */*',
                                 'Content-Type': 'application/json'
                         }
                     }).then(function (data) {
                         console.log("Bid of amount " + bidAmount + "was POSTed. Give this input to user and update bids.");
-                    })  
+                    })
                 }
                 else
                 {
@@ -208,7 +208,7 @@ function countdown(slutDatum, element){
 }
 
   function createAuktionElements(auktion){
-    
+
     //The Container
     let container = document.getElementById("container");
     container.setAttribute("class", "app-container");
@@ -283,13 +283,13 @@ function countdown(slutDatum, element){
     //input button
     let button = document.createElement("INPUT");
     button.setAttribute("type", "button");
-    button.setAttribute("value", "Ge ett Bud"); 
-    button.setAttribute("class", "myBotton w3-button w3-round w3-teal"); 
+    button.setAttribute("value", "Ge ett Bud");
+    button.setAttribute("class", "myBotton w3-button w3-round w3-teal");
     button.addEventListener("click", () => auktion.CheckBid())
     div.appendChild(button);
 
     countdown(auktion.slutDatum, pCountDown);
-    
+
   }
 
 
@@ -304,25 +304,83 @@ function CheckBid(){
     {
         let bidAmount = parseInt(inputBud.value);
         if (Number.isInteger(bidAmount) == true)
-        {       
+        {
             if (bidAmount > bidToMatch)
             {
-                let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };  
+                let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };
                 fetch(bidURL + auktionID,
                 {
                     method: 'POST',
                     body: JSON.stringify(jsonData),
-                    headers: 
+                    headers:
                     {
                             'Accept': 'application/json, text/plain, */*',
                             'Content-Type': 'application/json'
                     }
                 }).then(function (data) {
                     console.log('Request success: ', 'posten skapad');
-                })  
+                })
             }
         }
     }
 }
 
 
+/*************************************************************************** */
+/** ANGEL ARBETE *********************************************************** */
+/*************************************************************************** */
+//Auktion delete -Angel
+
+document.querySelector("#wrapper-delete").addEventListener("submit", adelete);
+document.querySelector("#wrapper-delete").addEventListener("click", adelete);
+function adelete() {
+
+    const id = document.querySelector("#auktion-del-id").value;
+
+    fetch(`http://nackowskis.azurewebsites.net/api/Auktion/700/${id}`, {
+      method:'Delete',
+      headers: {
+        'Accept': 'application/json, text/plain, */*',
+        'Content-type':'application/json'
+      },
+      body:JSON.stringify({})
+    })
+    .then((res) => res.json())
+    }
+
+
+//create new auktion -Angel
+
+document.querySelector("#head-form").addEventListener("submit", creating);
+document.querySelector("#create-aukt-btn").addEventListener("click", creating);
+
+function creating() {
+
+  const id1 = document.getElementById("auktion-id").value;
+  const id2 = document.getElementById("title").value;
+  const id3 = document.getElementById("beskrivning").value;
+  const id4 = document.getElementById("startdatum").value;
+  const id5 = document.getElementById("slutdatum").value;
+  const id6 = document.getElementById("gruppkod").value;
+  const id7 = document.getElementById("utropspris").value;
+
+  let formdata = {
+    "AuktionID":id1,
+    "Titel":id2,
+    "Beskrivning":id3,
+    "StartDatum":id4,
+    "SlutDatum":id5,
+    "Gruppkod":id6,
+    "Utropspris":id7
+  }
+
+  fetch("http://nackowskis.azurewebsites.net/api/Auktion/700/", {
+    method:'POST',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-type':'application/json'
+    },
+    body:JSON.stringify(formdata)
+  })
+  .then((res) => res.json())
+  }
