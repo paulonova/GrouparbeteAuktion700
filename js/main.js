@@ -5,7 +5,7 @@ var     titel;
 var     beskrivning;
 var     startDatum;
 var     slutDatum;
-var     gruppkod = 700;
+var     gruppkod;
 var     utropspris;
 var     countdown;
 var     budID;
@@ -17,13 +17,10 @@ var buttonSubmitBud;
 
 
 class AuktionManager {
-    constructor()
-    {
+    constructor() {
         this.auctions = new Array();
     }
-
-    AddAuktion(auktion)
-    {
+    AddAuktion(auktion){
         this.auctions.push(auktion);
     }
     
@@ -63,10 +60,9 @@ class Auktion{
     {
 
         fetch(BidsUrl + this.auktionID).then(
-            function(response) 
-            {
-                if (response.status !== 200) 
-                {
+            function(response){
+
+                if (response.status !== 200){
                     console.log('Looks like there was a problem. Status Code: ' + response.status);
                     return;
                 }
@@ -85,7 +81,7 @@ class Auktion{
 
                         this.bids.push(newBid);
                     }
-                    
+
                     this.SortBids();
                     
                     if (createAuktionCardFlag == true)
@@ -117,20 +113,20 @@ class Auktion{
         }
     }
 
-    GetHighestBid()
-    {
+    GetHighestBid(){
+
         if (this.bids.length > 0)
         {
            return this.bids[0].summa;
         }
 
-        return 0; 
+        return 0;
     }
 
     CheckBid()
     {
         let bidToMatch = this.GetHighestBid();
-        
+
         if (this.input.value.length > 0)
         {
             if (this.IsExpired())
@@ -152,7 +148,7 @@ class Auktion{
                     {
                         method: 'POST',
                         body: JSON.stringify(jsonData),
-                        headers: 
+                        headers:
                         {
                                 'Accept': 'application/json, text/plain, */*',
                                 'Content-Type': 'application/json'
@@ -219,8 +215,7 @@ class Auktion{
 }
 
 class Bid {
-    constructor(budID, summa, auktionID)
-    {
+    constructor(budID, summa, auktionID){
         this.budID = budID;
         this.summa = summa;
         this.auktionID = auktionID;
@@ -241,7 +236,6 @@ function sendRequest(url){
       // Examine the text in the response
       response.json()
       .then(function(data) {
-        console.log('Status Code: ' + response.status);
 
         for (let i = 0; i < data.length; i++) {
           var auktion = new Auktion(
@@ -293,7 +287,7 @@ function countdown(slutDatum, element, inputBid, buttonBid) {
 }
 
   function createAuktionElements(auktion){
-    
+
     //The Container
     let container = document.getElementById("container");
     container.setAttribute("class", "app-container");
@@ -378,8 +372,8 @@ function countdown(slutDatum, element, inputBid, buttonBid) {
     //input button
     let button = document.createElement("INPUT");
     button.setAttribute("type", "button");
-    button.setAttribute("value", "Ge ett Bud"); 
-    button.setAttribute("class", "myBotton w3-button w3-round w3-teal"); 
+    button.setAttribute("value", "Ge ett Bud");
+    button.setAttribute("class", "myBotton w3-button w3-round w3-teal");
     button.addEventListener("click", () => auktion.CheckBid())
     div.appendChild(button);
 
@@ -398,32 +392,3 @@ function countdown(slutDatum, element, inputBid, buttonBid) {
     
 }
 
-
-/**************************************************/
-/** PAULO ==>  CREATE AUKTION METHODS */
-/**************************************************/
-
-function createNewAuktion(){
-
-    var newAuktion = new Auktion(
-        auktionID = document.getElementById("auktion-id").value,
-        titel = document.getElementById("title").value,
-        beskrivning = document.getElementById("beskrivning").value,
-        startDatum = document.getElementById("startDatum").value,
-        slutDatum = document.getElementById("slutDatum").value,
-        gruppkod = document.getElementById("gruppkod").value,
-        utropspris = document.getElementById("utropspris").value,
-        
-    )
-
-    console.log(
-        newAuktion.auktionID, 
-        newAuktion.titel, 
-        newAuktion.beskrivning, 
-        newAuktion.startDatum, 
-        newAuktion.slutDatum, 
-        newAuktion.gruppkod, 
-        newAuktion.utropspris);
-
-
-}

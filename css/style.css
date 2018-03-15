@@ -29,6 +29,9 @@ body{
     padding: 20px;
 }
 
+.red{
+    color: red;
+}
 
 p{
     font-size: 14px;
@@ -51,31 +54,3 @@ h3.footer{
     margin-left: 5px;
 }
 
-
-.red{
-    color: red;
-}
-
-
-/******************************************************/
-/* FORMULARY ***/
-/******************************************************/
-
-.form-container{
-    width: 80%;
-    margin: 0 auto;
-}
-
-.input-field{
-    margin-bottom: 5px;
-    border-radius: 5px;
-}
-
-label{
-    color: teal;
-}
-
-.delete-continer{
-    width: 80%;
-    margin: 20px auto;
-}
