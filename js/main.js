@@ -19,19 +19,99 @@ var buttonSubmitBud;
 class AuktionManager {
     constructor() {
         this.auctions = new Array();
+
+        this.selectSort = document.getElementById("sortauctions");
+        this.selectSort.addEventListener("change", () => this.SortList() )
+
+        
+        this.searchInput = document.getElementById("searchinput");
+
+        this.searchButton = document.getElementById("searchbutton");
+        this.searchButton.addEventListener("click", () => this.Search() )
+
+        let sideNav = document.getElementById("mySidebar");
+
+        let showAll = document.createElement("a");
+        showAll.setAttribute("href", "javascript:void(0)");
+        showAll.setAttribute("class", "w3-bar-item w3-button");
+        let showAllText = document.createTextNode("Visa Alla Auktioner");
+        showAll.appendChild(showAllText);
+        showAll.addEventListener("click", () => this.ShowAllAuctions());
+
+        sideNav.appendChild(showAll);
+
     }
     AddAuktion(auktion){
         this.auctions.push(auktion);
     }
+
+    SortList()
+    {
+        if (this.selectSort.value === "utropspris")
+        {
+            this.SortByStartingPrice();
+        }
+        else if (this.selectSort.value === "slutdatum")
+        {
+            this.SortByEndDate();
+        }
+    }
     
     SortByEndDate()
     {
-        this.auctions.sort(function(a, b) { return new Date(b.slutDatum).getTime() - new Date(a.slutDatum).getTime(); });
+        this.auctions.sort(function(a, b) { return new Date(a.slutDatum).getTime() - new Date(b.slutDatum).getTime(); });
+
+        this.ClearAuctionList();
+
+        this.PopulateAuctionList(this.auctions);
     }
 
     SortByStartingPrice()
     {
-        this.auctions.sort(function(a, b) { return b.utropspris - a.utropspris; });
+        this.auctions.sort(function(a, b) { return a.utropspris - b.utropspris; });
+
+        this.ClearAuctionList();
+
+        this.PopulateAuctionList(this.auctions);
+    }
+
+    ClearAuctionList()
+    {
+        let container = document.getElementById("container");
+
+        while (container.firstChild) 
+        {
+            container.removeChild(container.firstChild);
+        }
+    }
+    
+    PopulateAuctionList(auctionArray)
+    {
+        for (let auktion of auctionArray)
+        {
+            createAuktionElements(auktion);
+        }
+    }
+
+    Search()
+    {
+        let searchWord = this.searchInput.value;
+
+        if (searchWord.length > 0)
+        {
+            let searchResult = this.auctions.filter((obj) => obj["titel"].toUpperCase().indexOf(searchWord.toUpperCase()) > -1 || obj["beskrivning"].toUpperCase().indexOf(searchWord.toUpperCase()) > -1);
+            
+            this.ClearAuctionList();
+
+            this.PopulateAuctionList(searchResult);
+        }
+    }
+
+    ShowAllAuctions()
+    {
+        this.ClearAuctionList();
+
+        this.PopulateAuctionList(this.auctions);
     }
 }
 
@@ -42,7 +122,9 @@ class Auktion{
     constructor(auktionID, titel, beskrivning, startDatum, slutDatum, gruppkod, utropspris){
             this.auktionID = auktionID;
             this.titel = titel;
+            this.titelUpperCase = titel.toUpperCase();
             this.beskrivning = beskrivning;
+            this.beskrivningUpperCase = beskrivning.toUpperCase();
             this.startDatum = startDatum;
             this.slutDatum = slutDatum;
             this.gruppkod = gruppkod;
@@ -90,7 +172,7 @@ class Auktion{
                     }
                     else
                     {
-                        this.pHogstaBud.innerHTML = "Högsta Bud: " + this.GetHighestBid() + "KR";
+                        this.pHogstaBud.innerHTML = "Högsta Bud: " + this.GetHighestBid() + " kr";
                     }
                 })
         }.bind(this)
@@ -324,14 +406,16 @@ function countdown(slutDatum, element, inputBid, buttonBid) {
     pSlutDatum.innerHTML = "<strong>SlutDatum:</strong> " + auktion.slutDatum;
     div.appendChild(pSlutDatum);
 
+    /*
     let pGruppKod = document.createElement("P");
     pGruppKod.setAttribute("id", "gruppkod");
     pGruppKod.innerHTML = "<strong>GruppKod:</strong> " + auktion.gruppkod;
     div.appendChild(pGruppKod);
+    */
 
     let pUtropspris = document.createElement("P");
     pUtropspris.setAttribute("id", "utropspris");
-    pUtropspris.innerHTML = "<strong>Utropspris:</strong> " + auktion.utropspris + "KR";
+    pUtropspris.innerHTML = "<strong>Utropspris:</strong> " + auktion.utropspris + " kr";
     div.appendChild(pUtropspris);
 
     let pCountDown = document.createElement("P");
@@ -341,7 +425,7 @@ function countdown(slutDatum, element, inputBid, buttonBid) {
 
     let pHogstaBud = document.createElement("P");
     pHogstaBud.setAttribute("id", "hogstabud");
-    pHogstaBud.innerHTML = "<strong>Högsta Bud:</strong> " + auktion.GetHighestBid() + "KR";
+    pHogstaBud.innerHTML = "<strong>Högsta Bud:</strong> " + auktion.GetHighestBid() + " kr";
     div.appendChild(pHogstaBud);
 
     auktion.SetHighestBidElement(pHogstaBud);
@@ -351,7 +435,7 @@ function countdown(slutDatum, element, inputBid, buttonBid) {
     {
         let aAllaBud = document.createElement("a");
         aAllaBud.setAttribute("href", "javascript:void(0)");
-        aAllaBudText = document.createTextNode("Visa Alla Bud (" + auktion.bids.length + ")");
+        aAllaBudText = document.createTextNode("Visa Alla Bud (" + auktion.bids.length + "st)");
         aAllaBud.appendChild(aAllaBudText);
         aAllaBud.addEventListener("click", () => auktion.ShowAllBids());
         div.appendChild(aAllaBud);

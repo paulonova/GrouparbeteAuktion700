@@ -32,12 +32,18 @@
                 onclick="openSidebar()">&#9776;</button>
         <h1 class="w3-bar-item">Auktion App Grupp/700</h1>
     </header>
-    <div>
-        <select>
-            <option selected disabled>Sortera efter:</option>
-            <option>Slut datum</option>
-            <option>Utropspris</option>
-        </select>
+    <div id="elementcontainer">
+        <div id="searchcontainer" class="w3-theme">
+            <input id="searchinput" type="text">
+            <button id="searchbutton">Sök</button>
+        </div>
+        <div id="selectcontainer" class="w3-theme">
+            <select id="sortauctions">
+                <option selected disabled>Sortera efter:</option>
+                <option value="slutdatum">Slut datum</option>
+                <option value="utropspris">Utropspris</option>
+            </select>
+        </div>
     </div>
     <main id="container" class="app-container">       
 

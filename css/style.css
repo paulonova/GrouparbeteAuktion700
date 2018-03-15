@@ -54,3 +54,38 @@ h3.footer{
     margin-left: 5px;
 }
 
+#elementcontainer
+{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#searchcontainer
+{
+    width: 50%;
+    display: flex;
+    justify-content: flex-start;
+    padding: 0.5em;
+}
+
+#selectcontainer
+{
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5em;
+}
+
+select
+{
+    border: 2px solid #009688;
+}
+
+#searchbutton
+{
+    background-color: #009688;
+    color: #ffffff;
+    border: 0;
+    outline: 0;
+}
