@@ -5,7 +5,7 @@ var     titel;
 var     beskrivning;
 var     startDatum;
 var     slutDatum;
-var     gruppkod = 700;
+var     gruppkod;
 var     utropspris;
 var     countdown;
 var     budID;
@@ -17,13 +17,10 @@ var buttonSubmitBud;
 
 
 class AuktionManager {
-    constructor()
-    {
+    constructor() {
         this.auctions = new Array();
     }
-
-    AddAuktion(auktion)
-    {
+    AddAuktion(auktion){
         this.auctions.push(auktion);
     }
 }
@@ -45,20 +42,19 @@ class Auktion{
             this.input = null;
         }
 
-    LoadBids()
-    {
+    LoadBids(){
 
         fetch(BidsUrl + this.auktionID).then(
-            function(response) 
-            {
-                if (response.status !== 200) 
-                {
+            function(response){
+
+                if (response.status !== 200){
                     console.log('Looks like there was a problem. Status Code: ' + response.status);
                     return;
                 }
             
-                response.json().then( (data) =>
-                {
+
+                response.json().then( (data) =>{
+
                     // console.log('Status Code: ' + response.status);
             
                    for (let bid of data)
@@ -71,9 +67,9 @@ class Auktion{
 
                         this.bids.push(newBid);
                     }
-                    
+
                     this.SortBids();
-                    
+
                     createAuktionElements(this);
                 })
         }.bind(this)
@@ -83,7 +79,7 @@ class Auktion{
 
     }
 
-    SortBids() 
+    SortBids()
     {
         if (this.bids.length > 0)
         {
@@ -91,40 +87,40 @@ class Auktion{
         }
     }
 
-    GetHighestBid()
-    {
+    GetHighestBid(){
+
         if (this.bids.length > 0)
         {
            return this.bids[0].summa;
         }
 
-        return 0; 
+        return 0;
     }
 
     CheckBid()
     {
         let bidToMatch = this.GetHighestBid();
-        
+
         if (this.input.value.length > 0)
         {
             let bidAmount = parseInt(this.input.value);
             if (Number.isInteger(bidAmount) == true)
-            {       
+            {
                 if (bidAmount > bidToMatch)
                 {
-                    let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };  
+                    let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };
                     fetch(bidURL + auktionID,
                     {
                         method: 'POST',
                         body: JSON.stringify(jsonData),
-                        headers: 
+                        headers:
                         {
                                 'Accept': 'application/json, text/plain, */*',
                                 'Content-Type': 'application/json'
                         }
                     }).then(function (data) {
                         console.log("Bid of amount " + bidAmount + "was POSTed. Give this input to user and update bids.");
-                    })  
+                    })
                 }
                 else
                 {
@@ -141,8 +137,7 @@ class Auktion{
 }
 
 class Bid {
-    constructor(budID, summa, auktionID)
-    {
+    constructor(budID, summa, auktionID){
         this.budID = budID;
         this.summa = summa;
         this.auktionID = auktionID;
@@ -163,7 +158,6 @@ function sendRequest(url){
       // Examine the text in the response
       response.json()
       .then(function(data) {
-        console.log('Status Code: ' + response.status);
 
         for (let i = 0; i < data.length; i++) {
           var auktion = new Auktion(
@@ -189,10 +183,10 @@ function sendRequest(url){
 
 //Function CountDown..
 function countdown(slutDatum, element){
-    console.log(slutDatum);
-    console.log(element);
+    // console.log(slutDatum);
+    // console.log(element);
     var countDownDate = new Date(slutDatum).getTime();
-    console.log("countDownDate " + countDownDate);
+    // console.log("countDownDate " + countDownDate);
 
     var x = setInterval(function() {
 
@@ -216,7 +210,7 @@ function countdown(slutDatum, element){
 }
 
   function createAuktionElements(auktion){
-    
+
     //The Container
     let container = document.getElementById("container");
     container.setAttribute("class", "app-container");
@@ -291,19 +285,19 @@ function countdown(slutDatum, element){
     //input button
     let button = document.createElement("INPUT");
     button.setAttribute("type", "button");
-    button.setAttribute("value", "Ge ett Bud"); 
-    button.setAttribute("class", "myBotton w3-button w3-round w3-teal"); 
+    button.setAttribute("value", "Ge ett Bud");
+    button.setAttribute("class", "myBotton w3-button w3-round w3-teal");
     button.addEventListener("click", () => auktion.CheckBid())
     div.appendChild(button);
 
     countdown(auktion.slutDatum, pCountDown);
-    
+
   }
 
 
 
-function CheckBid()
-{
+function CheckBid(){
+
     let bidURL = "http://nackowskis.azurewebsites.net/api/Bud/700/";
     let bidToMatch = 0;
     let auktionID = 7; //This needs to be updated to valid ID dependentant on auction
@@ -312,22 +306,22 @@ function CheckBid()
     {
         let bidAmount = parseInt(inputBud.value);
         if (Number.isInteger(bidAmount) == true)
-        {       
+        {
             if (bidAmount > bidToMatch)
             {
-                let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };  
+                let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };
                 fetch(bidURL + auktionID,
                 {
                     method: 'POST',
                     body: JSON.stringify(jsonData),
-                    headers: 
+                    headers:
                     {
                             'Accept': 'application/json, text/plain, */*',
                             'Content-Type': 'application/json'
                     }
                 }).then(function (data) {
                     console.log('Request success: ', 'posten skapad');
-                })  
+                })
             }
         }
     }
