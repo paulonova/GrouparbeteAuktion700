@@ -74,6 +74,8 @@ function creating() {
   document.getElementById("beskrivning").value=""
   document.getElementById("gruppkod").value=""
   document.getElementById("utropspris").value=""
+  document.getElementById("startdatum").value=""
+  document.getElementById("slutdatum").value=""
 
 
 
