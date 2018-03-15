@@ -4,6 +4,22 @@
 /** PAULO ==>  CREATE AUKTION METHODS */
 /**************************************************/
 
+
+class Auktion{
+    constructor(auktionID, titel, beskrivning, startDatum, slutDatum, gruppkod, utropspris){
+            this.auktionID = auktionID;
+            this.titel = titel;
+            this.beskrivning = beskrivning;
+            this.startDatum = startDatum;
+            this.slutDatum = slutDatum;
+            this.gruppkod = gruppkod;
+            this.utropspris = utropspris;
+
+            this.bids = new Array();
+            this.input = null;
+        }
+    }
+
 function deleteAuktion(){
     var idInput = document.getElementById("auktionId").value;
     console.log(idInput);
