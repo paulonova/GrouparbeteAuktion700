@@ -29,6 +29,9 @@ body{
     padding: 20px;
 }
 
+.red{
+    color: red;
+}
 
 p{
     font-size: 14px;
@@ -51,31 +54,38 @@ h3.footer{
     margin-left: 5px;
 }
 
-
-.red{
-    color: red;
+#elementcontainer
+{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
 }
 
-
-/******************************************************/
-/* FORMULARY ***/
-/******************************************************/
-
-.form-container{
-    width: 80%;
-    margin: 0 auto;
+#searchcontainer
+{
+    width: 50%;
+    display: flex;
+    justify-content: flex-start;
+    padding: 0.5em;
 }
 
-.input-field{
-    margin-bottom: 5px;
-    border-radius: 5px;
+#selectcontainer
+{
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5em;
 }
 
-label{
-    color: teal;
+select
+{
+    border: 2px solid #009688;
 }
 
-.delete-continer{
-    width: 80%;
-    margin: 20px auto;
+#searchbutton
+{
+    background-color: #009688;
+    color: #ffffff;
+    border: 0;
+    outline: 0;
 }
