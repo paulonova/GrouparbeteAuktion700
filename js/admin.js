@@ -21,9 +21,28 @@ class Auktion{
     }
 
 function deleteAuktion(){
-    var idInput = document.getElementById("auktionId").value;
-    console.log(idInput);
-    // var url = "";
+    var idInput = document.getElementById("auktionDelId").value;
+    console.log("==> " + idInput);
+    var url = "";
+
+
+    function remove(event){
+        event.preventDefault()
+        var id = event.target.getAttribute("data-id")
+        fetch(apiUrl + "/" + id,{
+          method: 'DELETE'
+        }).then(function(){
+          todos.removeChild(event.target.parentNode)
+        })
+          }
+          fetch(apiUrl + ".json").then(function(response){
+        response.json().then(function(todos){
+          todos.forEach(li)
+        })
+          })
+
+
+
 }
 
 
