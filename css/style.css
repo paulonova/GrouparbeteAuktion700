@@ -1,12 +1,14 @@
+
+
 /******************************************************/
 /* BASES ***/
 /******************************************************/
 
-html{
+html {
     background-color: whitesmoke;
 }
 
-body{
+body {
     margin: 0 auto;
     background-color: lightgray;
     max-width: 600px;
@@ -18,8 +20,7 @@ body{
 /* CONTENT ***/
 /******************************************************/
 
-
-.auktion-card{
+.auktion-card {
     background-color: whitesmoke;
     margin: 10px auto;
     width: 80%;
@@ -29,63 +30,83 @@ body{
     padding: 20px;
 }
 
-.red{
+.red {
     color: red;
 }
 
-p{
+p {
     font-size: 14px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
 }
 
-h3{
+h3 {
     white-space: nowrap;
     margin-bottom: 5px;
     color: teal;
 }
 
-h3.footer{
+h3.footer {
     color: whitesmoke;
 }
 
-.myBotton{
+.myBotton {
     margin-left: 5px;
 }
 
-#elementcontainer
-{
+#elementcontainer {
+    background-color: #009688;
     width: 100%;
     display: flex;
-    flex-wrap: wrap;
+    justify-content: center;
 }
 
-#searchcontainer
-{
+#searchcontainer {
     width: 50%;
     display: flex;
     justify-content: flex-start;
     padding: 0.5em;
 }
 
-#selectcontainer
-{
-    width: 50%;
+#selectcontainer {
     display: flex;
     justify-content: flex-end;
     padding: 0.5em;
 }
 
-select
-{
-    border: 2px solid #009688;
+select {
+    border: 2px solid lightgray;
+    width: 250px;
+    color: gray;
 }
 
-#searchbutton
-{
-    background-color: #009688;
-    color: #ffffff;
-    border: 0;
-    outline: 0;
+
+
+.searchBtn {
+    border: 1px solid lightgray;
+}
+
+
+/******************************************************/
+/* FORMULARY ***/
+/******************************************************/
+
+.form-container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.input-field {
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+label {
+    color: teal;
+}
+
+.delete-continer {
+    width: 80%;
+    margin: 20px auto;
 }
