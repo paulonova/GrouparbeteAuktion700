@@ -110,3 +110,15 @@ label {
     width: 80%;
     margin: 20px auto;
 }
+
+
+.delBudBtn{
+    color: teal;
+    margin-left: 20px;
+    margin-bottom: 5px;
+}
+
+.delBudBtn:hover{
+    background-color: teal;
+    color: whitesmoke;
+}

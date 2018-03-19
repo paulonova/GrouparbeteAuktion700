@@ -17,9 +17,6 @@ function adelete() {
     },
     body: JSON.stringify({})
   })
-    .then((res) => res.json());
-
-
 }
 
 
@@ -55,9 +52,7 @@ function creating() {
     },
     body: JSON.stringify(formdata)
   })
-    .then((res) => res.json())
-
-
+    // .then((res) => res.json())
 
   document.getElementById("auktion-id").value = "";
   document.getElementById("title").value = "";
