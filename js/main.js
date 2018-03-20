@@ -1,15 +1,17 @@
-const   AuktionUrl = "http://nackowskis.azurewebsites.net/api/Auktion/700";
-const   BidsUrl = "https://nackowskis.azurewebsites.net/api/Bud/700/";
-var     auktionID;
-var     titel;
-var     beskrivning;
-var     startDatum;
-var     slutDatum;
-var     gruppkod;
-var     utropspris;
-var     countdown;
-var     budID;
-var     summa;
+const AuktionUrl = "http://nackowskis.azurewebsites.net/api/Auktion/700";
+const BidsUrl = "https://nackowskis.azurewebsites.net/api/Bud/700/";
+const budUrlDelete = "http://nackowskis.azurewebsites.net/api/bud/32/";
+var auktionID;
+var auktion;
+var titel;
+var beskrivning;
+var startDatum;
+var slutDatum;
+var gruppkod;
+var utropspris;
+var countdown;
+var budID;
+var summa;
 
 var inputBud;
 var buttonSubmitBud;
@@ -19,123 +21,295 @@ var buttonSubmitBud;
 class AuktionManager {
     constructor() {
         this.auctions = new Array();
+
+        this.selectSort = document.getElementById("sortauctions");
+        this.selectSort.addEventListener("change", () => this.SortList())
+
+
+        this.searchInput = document.getElementById("searchinput");
+
+        this.searchButton = document.getElementById("searchbutton");
+        this.searchButton.addEventListener("click", () => this.Search())
+
+        let sideNav = document.getElementById("mySidebar");
+
+        let showAll = document.createElement("a");
+        showAll.setAttribute("href", "javascript:void(0)");
+        showAll.setAttribute("class", "w3-bar-item w3-button");
+        let showAllText = document.createTextNode("Visa Alla Auktioner");
+        showAll.appendChild(showAllText);
+        showAll.addEventListener("click", () => this.ShowAllAuctions());
+
+        sideNav.appendChild(showAll);
+
     }
-    AddAuktion(auktion){
+    AddAuktion(auktion) {
         this.auctions.push(auktion);
+    }
+
+    SortList() {
+        if (this.selectSort.value === "utropspris") {
+            this.SortByStartingPrice();
+        }
+        else if (this.selectSort.value === "slutdatum") {
+            this.SortByEndDate();
+        }
+    }
+
+    SortByEndDate() {
+        this.auctions.sort(function (a, b) {
+            return new Date(a.slutDatum)
+                .getTime() - new Date(b.slutDatum)
+                    .getTime();
+        });
+
+        this.ClearAuctionList();
+
+        this.PopulateAuctionList(this.auctions);
+    }
+
+    SortByStartingPrice() {
+        this.auctions.sort(function (a, b) { return a.utropspris - b.utropspris; });
+
+        this.ClearAuctionList();
+
+        this.PopulateAuctionList(this.auctions);
+    }
+
+    ClearAuctionList() {
+        let container = document.getElementById("container");
+
+        while (container.firstChild) {
+            container.removeChild(container.firstChild);
+        }
+    }
+
+    PopulateAuctionList(auctionArray) {
+        for (let auktion of auctionArray) {
+            createAuktionElements(auktion);
+        }
+    }
+
+    Search() {
+        let searchWord = this.searchInput.value;
+
+        if (searchWord.length > 0) {
+            let searchResult = this.auctions.filter((obj) => obj["titel"].toUpperCase()
+                .indexOf(searchWord.toUpperCase()) > -1 || obj["beskrivning"].toUpperCase()
+                    .indexOf(searchWord.toUpperCase()) > -1);
+
+            this.ClearAuctionList();
+
+            this.PopulateAuctionList(searchResult);
+        }
+    }
+
+    ShowAllAuctions() {
+        this.ClearAuctionList();
+
+        this.PopulateAuctionList(this.auctions);
     }
 }
 
+
 var auktionManager = new AuktionManager();
 
+class Auktion {
+    constructor(auktionID, titel, beskrivning, startDatum, slutDatum, gruppkod, utropspris) {
+        this.auktionID = auktionID;
+        this.titel = titel;
+        this.titelUpperCase = titel.toUpperCase();
+        this.beskrivning = beskrivning;
+        this.beskrivningUpperCase = beskrivning.toUpperCase();
+        this.startDatum = startDatum;
+        this.slutDatum = slutDatum;
+        this.gruppkod = gruppkod;
+        this.utropspris = utropspris;
 
-class Auktion{
-    constructor(auktionID, titel, beskrivning, startDatum, slutDatum, gruppkod, utropspris){
-            this.auktionID = auktionID;
-            this.titel = titel;
-            this.beskrivning = beskrivning;
-            this.startDatum = startDatum;
-            this.slutDatum = slutDatum;
-            this.gruppkod = gruppkod;
-            this.utropspris = utropspris;
+        this.bids = new Array();
+        this.input = null;
+        this.message = null;
 
-            this.bids = new Array();
-            this.input = null;
-        }
+        this.pHogstaBud = null;
+        this.pAllaBud = null;
+        this.aAllaBud = null;
+    }
 
-    LoadBids(){
+    LoadBids(createAuktionCardFlag) {
 
         fetch(BidsUrl + this.auktionID).then(
-            function(response){
+            function (response) {
 
-                if (response.status !== 200){
+                if (response.status !== 200) {
                     console.log('Looks like there was a problem. Status Code: ' + response.status);
                     return;
                 }
 
-                response.json().then( (data) =>{
-                    // console.log('Status Code: ' + response.status);
+                response.json()
+                    .then((data) => {
 
-                   for (let bid of data)
-                    {
-                        let newBid = new Bid(
-                            bid.BudID,
-                            bid.Summa,
-                            bid.AuktionID
-                        );
+                        for (let bid of data) {
+                            let newBid = new Bid(
+                                bid.BudID,
+                                bid.Summa,
+                                bid.AuktionID
+                            );
 
-                        this.bids.push(newBid);
-                    }
+                            this.bids.push(newBid);
+                        }
 
-                    this.SortBids();
+                        this.SortBids();
 
-                    createAuktionElements(this);
-                })
-        }.bind(this)
-        ).catch(function(err) {
-        console.log('Fetch Error :-S', err);
-      });
+                        if (createAuktionCardFlag == true) {
+                            createAuktionElements(this);
+                        }
+                        else {
+                            this.pHogstaBud.innerHTML = "<strong>Högsta Bud:</strong> " + this.GetHighestBid() + " kr";
+
+                            this.aAllaBud.innerHTML = "Visa Alla Bud (" + this.bids.length + "st)";
+                            this.pAllaBud.innerHTML = "";
+                        }
+                    })
+            }.bind(this)
+        ).catch(function (err) {
+            console.log('Fetch Error :-S', err);
+        });
 
     }
 
-    SortBids()
-    {
-        if (this.bids.length > 0)
-        {
-            this.bids.sort(function(a, b) { return b.summa-a.summa; });
+    ClearBids() {
+        this.bids = new Array();
+    }
+
+    SortBids() {
+        if (this.bids.length > 0) {
+            this.bids.sort(function (a, b) { return b.summa - a.summa; });
         }
     }
 
-    GetHighestBid(){
+    GetHighestBid() {
 
-        if (this.bids.length > 0)
-        {
-           return this.bids[0].summa;
+        if (this.bids.length > 0) {
+            return this.bids[0].summa;
         }
 
         return 0;
     }
 
-    CheckBid()
-    {
+    CheckBid() {
         let bidToMatch = this.GetHighestBid();
 
-        if (this.input.value.length > 0)
-        {
+        if (this.input.value.length > 0) {
+            if (this.IsExpired()) {
+                this.message.innerHTML = "<span class='red'>ERROR: Auction expired and can't take new bids.</span>";
+                return;
+            }
             let bidAmount = parseInt(this.input.value);
-            if (Number.isInteger(bidAmount) == true)
-            {
-                if (bidAmount > bidToMatch)
-                {
-                    let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };
-                    fetch(bidURL + auktionID,
-                    {
-                        method: 'POST',
-                        body: JSON.stringify(jsonData),
-                        headers:
-                        {
-                                'Accept': 'application/json, text/plain, */*',
-                                'Content-Type': 'application/json'
-                        }
-                    }).then(function (data) {
-                        console.log("Bid of amount " + bidAmount + "was POSTed. Give this input to user and update bids.");
-                    })
+            if (Number.isInteger(bidAmount) == true) {
+                if (bidAmount < this.utropspris) {
+                    this.message.innerHTML = "<span class='red'>ERROR: Bid must be higher than starting bid.</span>";
                 }
-                else
-                {
+                else if (bidAmount > bidToMatch) {
+                    let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: this.auktionID };
+
+                    fetch(BidsUrl + this.auktionID,
+                        {
+                            method: 'POST',
+                            body: JSON.stringify(jsonData),
+                            headers:
+                                {
+                                    'Accept': 'application/json, text/plain, */*',
+                                    'Content-Type': 'application/json'
+                                }
+                        }).then(function (data) {
+                            console.log("Bid of amount " + bidAmount + " was POSTed. Give this input to user and update bids.");
+
+                            this.message.innerHTML = "<span><strong>SUCCESS</strong>, Bid of amount " + bidAmount + " was placed.</span>";
+
+                            this.ClearBids();
+                            this.LoadBids(false);
+
+                            this.input.value = "";
+
+                        }.bind(this))
+                }
+                else {
                     console.log("Error: Bid was not higher than current Highest Bid. Print this on the page.");
+                    this.message.innerHTML = "<span class='red'>ERROR: Bid must be higher than highest bid.</span>";
                 }
             }
         }
     }
 
-    SetBidInput(element)
-    {
+    SetBidInput(element) {
         this.input = element;
+    }
+
+    SetMessageElement(element) {
+        this.message = element;
+    }
+
+    IsExpired() {
+        return (new Date(this.slutDatum).getTime() - new Date().getTime() <= 0);
+    }
+
+    SetHighestBidElement(element) {
+        this.pHogstaBud = element;
+    }
+
+    SetShowAllBidsElement(elementp, elementa) {
+        this.pAllaBud = elementp;
+        this.aAllaBud = elementa;
+    }
+
+    ShowAllBids() {
+
+        if (this.pAllaBud !== null) {
+            this.pAllaBud.innerHTML = "";
+            for (let bid of this.bids) {
+                this.pAllaBud.innerHTML += "<strong id='budId'>BudID:</strong> " + bid.budID
+                    + " <strong id='summaId'>Summa:</strong> " + bid.summa
+                    + `<input id='btnDel' class='delBudBtn' onclick='deleteBud(${bid.budID})' type='submit' value='Delete Bud'>` + "<br>";
+            }
+        }
+        if (this.aAllaBud !== null) {
+            this.aAllaBud.innerHTML = "Visa Alla Bud (" + this.bids.length + "st)";
+        }
     }
 }
 
+//Function to delete bud.
+function deleteBud(budID) {
+
+    fetch(budUrlDelete + budID, {
+        method: 'Delete'
+
+    }).then(function () {
+
+        // let pBudTag = document.getElementById("pBud"); 
+        // pBudTag.setAttribute("hidden", "true");
+        // pBudTag.style.display = "none";
+        // pBudTag.innerHTML = "";
+        
+        var btn = document.getElementById("btnDel");
+        btn.remove();
+
+        var strongBud = document.getElementById("budId");
+        strongBud.remove();
+
+        var strongSumma = document.getElementById("summaId");
+        strongSumma.remove();
+        
+        // pBudTag.removeChild(strongBud);
+        // pBudTag.removeChild(strongSumma);
+        // pBudTag.removeChild(btn);
+
+        location.reload(true);
+    })
+}
+
 class Bid {
-    constructor(budID, summa, auktionID){
+    constructor(budID, summa, auktionID) {
         this.budID = budID;
         this.summa = summa;
         this.auktionID = auktionID;
@@ -145,69 +319,68 @@ class Bid {
 sendRequest(AuktionUrl);
 
 //Function to send a request
-function sendRequest(url){
+function sendRequest(url) {
     fetch(url)
-    .then(
-    function(response) {
-      if (response.status !== 200) {
-        console.log('Looks like there was a problem. Status Code: ' + response.status);
-        return;
-      }
-      // Examine the text in the response
-      response.json()
-      .then(function(data) {
+        .then(
+            function (response) {
+                if (response.status !== 200) {
+                    console.log('Looks like there was a problem. Status Code: ' + response.status);
+                    return;
+                }
+                // Examine the text in the response
+                response.json()
+                    .then(function (data) {
 
-        for (let i = 0; i < data.length; i++) {
-          var auktion = new Auktion(
-            data[i].AuktionID,
-            data[i].Titel,
-            data[i].Beskrivning,
-            data[i].StartDatum,
-            data[i].SlutDatum,
-            data[i].Gruppkod,
-            data[i].Utropspris);
+                        for (let i = 0; i < data.length; i++) {
+                            auktion = new Auktion(
+                                data[i].AuktionID,
+                                data[i].Titel,
+                                data[i].Beskrivning,
+                                data[i].StartDatum,
+                                data[i].SlutDatum,
+                                data[i].Gruppkod,
+                                data[i].Utropspris);
 
-            auktion.LoadBids();
+                            auktion.LoadBids(true);
 
-            auktionManager.AddAuktion(auktion);
-        }
-    });
-  }
+                            auktionManager.AddAuktion(auktion);
+                        }
+                    });
+            }
 
-).catch(function(err) {
-    console.log('Fetch Error :-S', err);
-  });
+        ).catch(function (err) {
+            console.log('Fetch Error :-S', err);
+        });
 }
 
 //Function CountDown..
-function countdown(slutDatum, element){
-    // console.log(slutDatum);
-    // console.log(element);
+function countdown(slutDatum, element, inputBid, buttonBid) {
     var countDownDate = new Date(slutDatum).getTime();
-    // console.log("countDownDate " + countDownDate);
 
-    var x = setInterval(function() {
+    var x = setInterval(function () {
 
-    var now = new Date().getTime();
-    var distance = countDownDate - now;
+        var now = new Date().getTime();
+        var distance = countDownDate - now;
 
-    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    element.innerHTML = "Countdown: " + days + "d " + hours + "h "
-    + minutes + "m " + seconds + "s ";
+        element.innerHTML = "<strong>Countdown:</strong> " + days + "d " + hours + "h "
+            + minutes + "m " + seconds + "s ";
 
-    if (distance < 0) {
-        clearInterval(x);
-        element.innerHTML = "EXPIRED";
-    }
+        if (distance < 0) {
+            clearInterval(x);
+            element.innerHTML = "<strong class='red'>EXPIRED</strong> ";
+            inputBid.disabled = true;
+            buttonBid.disabled = true;
+        }
 
-  }, 1000);
+    }, 1000);
 }
 
-  function createAuktionElements(auktion){
+function createAuktionElements(auktion) {
 
     //The Container
     let container = document.getElementById("container");
@@ -227,51 +400,56 @@ function countdown(slutDatum, element){
 
     let pauktionId = document.createElement("P");
     pauktionId.setAttribute("id", "auktionID");
-    let auktionIDText = document.createTextNode("AuktionID: " + auktion.auktionID);
-    pauktionId.appendChild(auktionIDText);
+    pauktionId.innerHTML = "<strong>AuktionID:</strong> " + auktion.auktionID;
     div.appendChild(pauktionId);
 
     let pBeskrivning = document.createElement("P");
     pBeskrivning.setAttribute("id", "beskrivning");
-    let beskrivText = document.createTextNode("Beskrivning: " + auktion.beskrivning);
-    pBeskrivning.appendChild(beskrivText);
+    pBeskrivning.innerHTML = "<strong>Beskrivning:</strong> " + auktion.beskrivning;
     div.appendChild(pBeskrivning);
 
     let pStartDatum = document.createElement("P");
     pStartDatum.setAttribute("id", "startDatum");
-    let startText = document.createTextNode("StartDatum: " + auktion.startDatum);
-    pStartDatum.appendChild(startText);
+    pStartDatum.innerHTML = "<strong>StartDatum:</strong> " + auktion.startDatum;
     div.appendChild(pStartDatum);
 
     let pSlutDatum = document.createElement("P");
     pSlutDatum.setAttribute("id", "slutDatum");
-    let slutText = document.createTextNode("SlutDatum: " + auktion.slutDatum);
-    pSlutDatum.appendChild(slutText);
+    pSlutDatum.innerHTML = "<strong>SlutDatum:</strong> " + auktion.slutDatum;
     div.appendChild(pSlutDatum);
 
-    let pGruppKod = document.createElement("P");
-    pGruppKod.setAttribute("id", "gruppkod");
-    let gruppText = document.createTextNode("GruppKod: " + auktion.gruppkod);
-    pGruppKod.appendChild(gruppText);
-    div.appendChild(pGruppKod);
 
     let pUtropspris = document.createElement("P");
     pUtropspris.setAttribute("id", "utropspris");
-    let utropsText = document.createTextNode("Utropspris: " + auktion.utropspris + "KR");
-    pUtropspris.appendChild(utropsText);
+    pUtropspris.innerHTML = "<strong>Utropspris:</strong> " + auktion.utropspris + " kr";
     div.appendChild(pUtropspris);
 
     let pCountDown = document.createElement("P");
     pCountDown.setAttribute("id", "countdown");
-    let countText = document.createTextNode("Countdown: ");
-    pCountDown.appendChild(countText);
+    pCountDown.innerHTML = "<strong>Countdown: </strong>";
     div.appendChild(pCountDown);
 
     let pHogstaBud = document.createElement("P");
     pHogstaBud.setAttribute("id", "hogstabud");
-    let hogstaBudText = document.createTextNode("Högsta Bud: " + auktion.GetHighestBid());
-    pHogstaBud.appendChild(hogstaBudText);
+    pHogstaBud.innerHTML = "<strong>Högsta Bud:</strong> " + auktion.GetHighestBid() + " kr";
     div.appendChild(pHogstaBud);
+
+    auktion.SetHighestBidElement(pHogstaBud);
+
+
+    if (!auktion.IsExpired()) {
+        let aAllaBud = document.createElement("a");
+        aAllaBud.setAttribute("href", "javascript:void(0)");
+        aAllaBud.innerHTML = "Visa Alla Bud (" + auktion.bids.length + "st)";
+        aAllaBud.addEventListener("click", () => auktion.ShowAllBids());
+        div.appendChild(aAllaBud);
+
+        let pAllaBud = document.createElement("p");
+        pAllaBud.setAttribute("id", "pBud");
+        div.appendChild(pAllaBud);
+        auktion.SetShowAllBidsElement(pAllaBud, aAllaBud);
+
+    }
 
     //Input text
     let txtArea = document.createElement("INPUT");
@@ -288,39 +466,17 @@ function countdown(slutDatum, element){
     button.addEventListener("click", () => auktion.CheckBid())
     div.appendChild(button);
 
-    countdown(auktion.slutDatum, pCountDown);
+    let pMessage = document.createElement("P");
+    pMessage.setAttribute("id", "message");
+    auktion.SetMessageElement(pMessage);
+    div.appendChild(pMessage);
 
-  }
-
-
-
-function CheckBid(){
-
-    let bidURL = "http://nackowskis.azurewebsites.net/api/Bud/700/";
-    let bidToMatch = 0;
-    let auktionID = 7; //This needs to be updated to valid ID dependentant on auction
-
-    if (inputBud.value.length > 0)
-    {
-        let bidAmount = parseInt(inputBud.value);
-        if (Number.isInteger(bidAmount) == true)
-        {
-            if (bidAmount > bidToMatch)
-            {
-                let jsonData = { BudID: 0, Summa: bidAmount, AuktionID: auktionID };
-                fetch(bidURL + auktionID,
-                {
-                    method: 'POST',
-                    body: JSON.stringify(jsonData),
-                    headers:
-                    {
-                            'Accept': 'application/json, text/plain, */*',
-                            'Content-Type': 'application/json'
-                    }
-                }).then(function (data) {
-                    console.log('Request success: ', 'posten skapad');
-                })
-            }
-        }
+    if (auktion.IsExpired()) {
+        txtArea.disabled = true;
+        button.disabled = true;
     }
+
+    countdown(auktion.slutDatum, pCountDown, txtArea, button);
+
 }
+
