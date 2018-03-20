@@ -265,11 +265,21 @@ class Auktion {
     ShowAllBids() {
 
         if (this.pAllaBud !== null) {
-            this.pAllaBud.innerHTML = "";
+
+            while (this.pAllaBud.firstChild) 
+            {
+                this.pAllaBud.removeChild(this.pAllaBud.firstChild);
+            }
             for (let bid of this.bids) {
-                this.pAllaBud.innerHTML += "<strong id='budId'>BudID:</strong> " + bid.budID
+
+                let bidDiv = document.createElement("div");
+
+                bidDiv.innerHTML += "<strong id='budId'>BudID:</strong> " + bid.budID
                     + " <strong id='summaId'>Summa:</strong> " + bid.summa
-                    + `<input id='btnDel' class='delBudBtn' onclick='deleteBud(${bid.budID})' type='submit' value='Delete Bud'>` + "<br>";
+                    + `<input id='btnDel' class='delBudBtn' onclick='deleteBud(${bid.budID},${bid.auktionID})' type='submit' value='Delete Bud'>` + "<br>";
+
+                this.pAllaBud.appendChild(bidDiv);
+                bid.divBid = bidDiv;
             }
         }
         if (this.aAllaBud !== null) {
@@ -279,40 +289,41 @@ class Auktion {
 }
 
 //Function to delete bud.
-function deleteBud(budID) {
-
+function deleteBud(budID, auktionID) {
     fetch(budUrlDelete + budID, {
         method: 'Delete'
 
     }).then(function () {
-
-        // let pBudTag = document.getElementById("pBud"); 
-        // pBudTag.setAttribute("hidden", "true");
-        // pBudTag.style.display = "none";
-        // pBudTag.innerHTML = "";
         
-        var btn = document.getElementById("btnDel");
-        btn.remove();
 
-        var strongBud = document.getElementById("budId");
-        strongBud.remove();
+        let auctionPos = auktionManager.auctions.map(function(auktion) { return auktion.auktionID; }).indexOf(auktionID); 
+        let auctionElement = auktionManager.auctions[auctionPos];
+        let bidPos = auctionElement.bids.map(function(bid) { return bid.budID; }).indexOf(budID);
+        let bidElement = auktionManager.auctions[auctionPos].bids[bidPos];
 
-        var strongSumma = document.getElementById("summaId");
-        strongSumma.remove();
+        while (bidElement.divBid.firstChild) 
+        {
+            bidElement.divBid.removeChild(bidElement.divBid.firstChild);
+        }
+
+        auctionElement.bids.splice(bidPos, 1);
+        if (auctionElement.aAllaBud !== null) {
+            auctionElement.aAllaBud.innerHTML = "Visa Alla Bud (" + auctionElement.bids.length + "st)";
+        }
+
+        auctionElement.SortBids();
+
+        auctionElement.pHogstaBud.innerHTML = "<strong>Högsta Bud:</strong> " + auctionElement.GetHighestBid() + " kr";
         
-        // pBudTag.removeChild(strongBud);
-        // pBudTag.removeChild(strongSumma);
-        // pBudTag.removeChild(btn);
-
-        location.reload(true);
     })
 }
 
 class Bid {
-    constructor(budID, summa, auktionID) {
+    constructor(budID, summa, auktionID, bidElement) {
         this.budID = budID;
         this.summa = summa;
         this.auktionID = auktionID;
+        this.divBid = bidElement;
     }
 }
 
