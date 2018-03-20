@@ -16,10 +16,24 @@ document.querySelector("#delBtn").addEventListener("click", adelete);
 
 function adelete() {
 
-    let id = document.querySelector("#auktionDelId").value;
-    document.querySelector("#auktionDelId").value = " ";
 
-    fetch(`http://nackowskis.azurewebsites.net/api/Auktion/700/${id}`, {
+  let id = document.querySelector("#auktionDelId").value;
+  document.querySelector("#auktionDelId").value = " ";
+
+
+  //Delete Bud!
+  fetch(`http://nackowskis.azurewebsites.net/api/Bud/700/${id}`, {
+    method:'Delete',
+    headers: {
+      'Accept': 'application/json, text/plain, */*',
+      'Content-type':'application/json'
+    },
+    body:JSON.stringify({})
+  })
+  .then((res) => res.json());
+
+  //Delete Auktion
+  fetch(`http://nackowskis.azurewebsites.net/api/Auktion/700/${id}`, {
       method:'Delete',
       headers: {
         'Accept': 'application/json, text/plain, */*',
